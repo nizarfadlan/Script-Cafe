@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    previewFeatures = ["jsonProtocol"]
+}
+
+generator zod {
+    provider  = "zod-prisma"
+    output    = "../zod-schemas"
+    modelCase = "camelCase"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    role          Role      @default(Kasir)
+    isActive      Boolean  @default(false)
+    password      String
+    loginAttempts Int     @default(0)
+    blockExpires  DateTime?
+    createdAt     DateTime  @default(now())
+    updatedAt      DateTime  @updatedAt
+    deletedAt     DateTime?
+}
+
+model MenuItem {
+    id       String   @id @default(dbgenerated("(concat('MI_', gen_random_uuid()))::TEXT"))
+    name     String
+    price    Int
+    discountPercent  Int? @default(0)
+    available Boolean @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    deletedAt     DateTime?
+
+    packages    PackageItem[]
+    transaction TransactionOnItem[]
+}
+
+model Package {
+    id        String   @id @default(dbgenerated("(concat('PM_', gen_random_uuid()))::TEXT"))
+    name      String
+    price    Int
+    discountPercent  Int? @default(0)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    deletedAt     DateTime?
+
+    items    PackageItem[]
+    transaction TransactionOnPackage[]
+}
+
+model PackageItem {
+    itemId   String
+    item    MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+    packageId   String
+    packages Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+    quantity Int
+    assignedAt DateTime @default(now())
+
+    @@id([itemId, packageId])
+}
+
+model Transaction {
+    id        String   @id @default(cuid())
+    total     Int
+    paid      Boolean @default(false)
+    finished   Boolean @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    paymentTypeId   String
+    paymentType PaymentType @relation(fields: [paymentTypeId], references: [id])
+    items TransactionOnItem[]
+    packages TransactionOnPackage[]
+    tableId   String?
+    table Table? @relation(fields: [tableId], references: [id], onDelete: Cascade)
+    bookingId  String? @unique
+    booking Booking? @relation(fields: [bookingId], references: [id])
+}
+
+model TransactionOnItem {
+    itemId   String
+    items MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+    transactionId   String
+    transactions Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+    assignedAt DateTime @default(now())
+
+    @@id([transactionId, itemId])
+}
+
+model TransactionOnPackage {
+    packageId   String
+    packages Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+    transactionId   String
+    transactions Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+    assignedAt DateTime @default(now())
+
+    @@id([transactionId, packageId])
+}
+
+model Table {
+    id        String   @id @default(cuid())
+    numberTable   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    transaction Transaction[]
+    booking Booking[]
+}
+
+model PaymentType {
+    id        String   @id @default(cuid())
+    name   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    transaction Transaction[]
+}
+
+model Booking {
+    id        String   @id @default(cuid())
+    name   String
+    phone   String
+    date   DateTime
+    paid      Boolean @default(false)
+    finished   Boolean @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    tableId  String
+    table Table @relation(fields: [tableId], references: [id], onDelete: Cascade)
+    transaction Transaction?
+}
+
+// Utils
+enum Role {
+    Owner
+    Manajer
+    Kasir
+    Kitchen
+}
