@@ -42,7 +42,7 @@
     "zod-prisma": "^0.5.4"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
