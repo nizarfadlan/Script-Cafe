@@ -1,5 +1,5 @@
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link, NavbarItem, NavbarMenuItem } from "@nextui-org/react";
-import { type Menu } from "@/types/menu.type";
+import type { Menu, ChildMenu } from "@/types/menu.type";
 import { usePathname } from "next/navigation";
 import NextLink from "./NextLink";
 import { useRouter } from "next/router";
@@ -7,6 +7,7 @@ import { ChevronDownIcon, IconsDefault } from "./Icons";
 import React from "react";
 import { useSession } from "next-auth/react";
 import type { Role } from "@prisma/client";
+import { Session } from "next-auth";
 
 export function MenuNavbar({
   items
@@ -49,12 +50,6 @@ export function MenuNavbar({
                           wrapper: "py-3",
                         }}
                         aria-label={`Dropdown ${menu.name}`}
-                        items={
-                          menu.items.filter((item) => (
-                            item.permissions &&
-                            item.permissions.includes(data?.user.role as Role)
-                          ) || !item.permissions)
-                        }
                         onAction={(item) => {
                           menu.items?.map(async(itemData) => {
                             if (itemData.key == item) {
@@ -63,15 +58,10 @@ export function MenuNavbar({
                           });
                         }}
                       >
-                        {(menuItems) => (
-                          <DropdownItem
-                            key={menuItems.key}
-                            description={menuItems.description}
-                            startContent={menuItems.icons ? menuItems.icons : <IconsDefault fill="currentColor" size={35} />}
-                          >
-                            {menuItems.name}
-                          </DropdownItem>
-                        )}
+                        <DropDownItem
+                          items={menu?.items}
+                          session={data}
+                        />
                       </DropdownMenu>
                     </Dropdown>
                   </>
@@ -85,6 +75,39 @@ export function MenuNavbar({
               </>
             ) : null}
         </React.Fragment>
+      ))}
+    </>
+  );
+}
+
+const DropDownItem: React.FC<{
+  items: ChildMenu[];
+  session: Session | null;
+}> = ({ items, session }) => {
+  const roleUser = session?.user?.role ?? "";
+  const itemsFilter = items.filter(
+    (item) =>
+      (item.permissions &&
+        item.permissions.includes(roleUser as Role)) ||
+      !item.permissions
+  )
+
+  return (
+    <>
+      {itemsFilter.map((item) => (
+        <DropdownItem
+          key={item.key}
+          description={item.description}
+          startContent={
+            item.icons ? (
+              item.icons
+            ) : (
+              <IconsDefault fill="currentColor" size={35} />
+            )
+          }
+        >
+          {item.name}
+        </DropdownItem>
       ))}
     </>
   );
