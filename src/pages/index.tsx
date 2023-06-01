@@ -1,11 +1,8 @@
 import { type NextPage } from "next";
 import { Image } from "@nextui-org/react";
 import Layout from "@/components/Layout";
-import { useTheme } from "next-themes";
 
 const Home: NextPage = () => {
-  const { theme } = useTheme();
-
   return (
     <>
       <Layout title="Home">

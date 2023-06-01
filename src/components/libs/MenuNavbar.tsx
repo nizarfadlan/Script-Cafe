@@ -7,7 +7,7 @@ import { ChevronDownIcon, IconsDefault } from "./Icons";
 import React from "react";
 import { useSession } from "next-auth/react";
 import type { Role } from "@prisma/client";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 export function MenuNavbar({
   items

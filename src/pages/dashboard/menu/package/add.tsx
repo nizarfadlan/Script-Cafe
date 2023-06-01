@@ -25,7 +25,7 @@ const AddPackageItem: NextPage = () => {
   }: IItemsOnPackage) => {
     const data = await itemsOnPackageTable.where("id").equals(id).limit(1).toArray();
 
-    let save: number | string | any;
+    let save: number | string;
     if (data.length > 0) {
       const itemDataOld: IItemsOnPackage = data[0] as IItemsOnPackage;
       save = await itemsOnPackageTable.update(id, { quantity: itemDataOld.quantity + Number(quantity) });

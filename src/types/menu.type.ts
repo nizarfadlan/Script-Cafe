@@ -4,7 +4,7 @@ export type ChildMenu = {
   key: string,
   name: string,
   href: string,
-  icons?: any,
+  icons?: string,
   description?: string,
   permissions?: Role[] | undefined,
 }

@@ -1,11 +1,10 @@
 import LayoutDashboard from "@/components/dashboard/Layout";
-import ModalDetailPackageItem from "@/components/dashboard/packagesItem/ModalDetailPackageItem";
 import { ChevronDownIcon, FilterIcon, PlusIcon, SearchIcon } from "@/components/libs/Icons";
 import TableDynamic, { type TableData, type TableColumn, type TableActions } from "@/components/libs/Table";
 import { toastCustom, toastCustomLoading } from "@/components/libs/Toast";
 import type { StatusData } from "@/server/pagination/pagination.schema";
 import { api } from "@/utils/api";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Popover, PopoverContent, PopoverTrigger, Radio, RadioGroup, Spinner, useDisclosure } from "@nextui-org/react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Popover, PopoverContent, PopoverTrigger, Radio, RadioGroup, Spinner } from "@nextui-org/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -20,11 +19,8 @@ const columns: TableColumn[] = [
 const PackageItem: NextPage = () => {
   const router = useRouter();
 
-  const { isOpen: openModalDetail, onOpen: onOpenModalDetail, onOpenChange: onOpenChangeModalDetail } = useDisclosure();
-
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
-  const [packageItem, setPackageItem] = useState<string>("");
   const [status, setStatus] = useState<string | undefined>("all" as StatusData);
   const [limit, setLimit] = useState<string | Set<React.Key>>(new Set(["10"]));
 
@@ -259,11 +255,6 @@ const PackageItem: NextPage = () => {
           />
         </>
       }
-      <ModalDetailPackageItem
-        isOpen={openModalDetail}
-        onOpenChange={onOpenChangeModalDetail}
-        packageItem={packageItem}
-      />
     </LayoutDashboard>
   );
 }
