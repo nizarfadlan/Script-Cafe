@@ -14,7 +14,6 @@ export default function ModalDetailUser({ isOpen, onOpenChange, user }: Props) {
       aria-labelledby="modal-title"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      isDismissable={false}
     >
       <ModalContent>
         {() => (

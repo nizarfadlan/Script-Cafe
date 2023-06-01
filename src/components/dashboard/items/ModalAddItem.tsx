@@ -46,7 +46,6 @@ export default function ModalAddItem({ isOpen, onOpenChange, onSuccess }: Props)
       aria-labelledby="modal-title"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      isDismissable={false}
     >
       <ModalContent>
         {(onClose) => (
