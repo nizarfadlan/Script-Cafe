@@ -18,8 +18,8 @@ html {
 
 /* NProgress */
 #nprogress .bar {
-  background: #C0C0C0 !important;
-  height: 6px;
+  background: #B972E4 !important;
+  height: 5px;
 }
 
 #nprogress .peg {
