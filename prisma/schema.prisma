@@ -15,12 +15,12 @@ generator zod {
 datasource db {
     provider = "postgresql"
     // For local
-    // url      = env("DATABASE_URL")
+    url      = env("DATABASE_URL")
 
     // For database vercel
-    url       = env("DATABASE_PRISMA_URL")
-    directUrl = env("DATABASE_URL_NON_POOLING")
-    shadowDatabaseUrl = env("DATABASE_URL_NON_POOLING")
+    // url       = env("DATABASE_PRISMA_URL")
+    // directUrl = env("DATABASE_URL_NON_POOLING")
+    // shadowDatabaseUrl = env("DATABASE_URL_NON_POOLING")
 }
 
 model User {

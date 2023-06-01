@@ -1,4 +1,4 @@
 export interface DefaultPropsModal {
-  isOpen: boolean;
-  onOpenChange: () => void;
+  isOpen?: boolean;
+  onOpenChange?: () => void;
 }

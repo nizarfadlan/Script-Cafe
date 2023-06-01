@@ -1,7 +1,7 @@
 import LayoutDashboard from "@/components/dashboard/Layout";
 import ModalAddItem from "@/components/dashboard/items/ModalAddItem";
 import ModalDetailItem from "@/components/dashboard/items/ModalDetailItem";
-import { ChevronDownIcon, FilterIcon, PlusIcon, SearchIcon } from "@/components/libs/Icons";
+import { ChevronDownIcon, FilterIcon, SearchIcon } from "@/components/libs/Icons";
 import TableDynamic, { type TableData, type TableColumn, type TableActions } from "@/components/libs/Table";
 import { toastCustom, toastCustomLoading } from "@/components/libs/Toast";
 import type { StatusData } from "@/server/pagination/pagination.schema";
@@ -20,7 +20,6 @@ const columns: TableColumn[] = [
 
 const Item: NextPage = () => {
   const router = useRouter();
-  const { isOpen: openModalAdd, onOpen: onOpenModalAdd, onOpenChange: onOpenChangeModalAdd } = useDisclosure();
   const { isOpen: openModalDetail, onOpen: onOpenModalDetail, onOpenChange: onOpenChangeModalDetail } = useDisclosure();
 
   const [page, setPage] = useState<number>(1);
@@ -225,14 +224,9 @@ const Item: NextPage = () => {
               )}
             </PopoverContent>
           </Popover>
-          <Button
-            startIcon={<PlusIcon fill="currentColor" size={18} />}
-            variant="shadow"
-            color="secondary"
-            onPress={onOpenModalAdd}
-          >
-            <p className="sr-only sm:not-sr-only">Add Item</p>
-          </Button>
+          <ModalAddItem
+            onSuccess={handleAddOrEditItemSuccess}
+          />
         </div>
       </div>
       {isLoading ? (
@@ -251,16 +245,11 @@ const Item: NextPage = () => {
           />
         </>
       }
-      <ModalAddItem
-        isOpen={openModalAdd}
-        onOpenChange={onOpenChangeModalAdd}
-        onSuccess={handleAddOrEditItemSuccess}
-      />
-      {openModalDetail && <ModalDetailItem
+      <ModalDetailItem
         isOpen={openModalDetail}
         onOpenChange={onOpenChangeModalDetail}
         item={item}
-      />}
+      />
     </LayoutDashboard>
   );
 }

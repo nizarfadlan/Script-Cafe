@@ -1,11 +1,10 @@
 import LayoutDashboard from "@/components/dashboard/Layout";
 import ModalAddUser from "@/components/dashboard/users/ModalAddUser";
 import ModalDetailUser from "@/components/dashboard/users/ModalDetailUser";
-import { PlusIcon } from "@/components/libs/Icons";
 import TableDynamic, { type TableData, type TableColumn, type TableActions } from "@/components/libs/Table";
 import { toastCustom, toastCustomLoading } from "@/components/libs/Toast";
 import { api } from "@/utils/api";
-import { Button, Spinner, useDisclosure } from "@nextui-org/react";
+import { Spinner, useDisclosure } from "@nextui-org/react";
 import { Role } from "@prisma/client";
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
@@ -23,7 +22,6 @@ const Users: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const { isOpen: openModalAdd, onOpen: onOpenModalAdd, onOpenChange: onOpenChangeModalAdd } = useDisclosure();
   const { isOpen: openModalDetail, onOpen: onOpenModalDetail, onOpenChange: onOpenChangeModalDetail } = useDisclosure();
 
   const [page, setPage] = useState<number>(1);
@@ -133,14 +131,9 @@ const Users: NextPage = () => {
           <h1 className="text-2xl font-bold">Users</h1>
         </div>
         <div className="flex justify-end col-span-6">
-          <Button
-            startIcon={<PlusIcon fill="currentColor" size={20} />}
-            variant="shadow"
-            color="secondary"
-            onPress={onOpenModalAdd}
-          >
-            <p className="sr-only sm:not-sr-only">Add User</p>
-          </Button>
+          <ModalAddUser
+            onSuccess={handleAddOrEditUserSuccess}
+          />
         </div>
       </div>
       {isLoading ? (
@@ -159,11 +152,6 @@ const Users: NextPage = () => {
           />
         </>
       }
-      <ModalAddUser
-        isOpen={openModalAdd}
-        onOpenChange={onOpenChangeModalAdd}
-        onSuccess={handleAddOrEditUserSuccess}
-      />
       <ModalDetailUser
         isOpen={openModalDetail}
         onOpenChange={onOpenChangeModalDetail}
