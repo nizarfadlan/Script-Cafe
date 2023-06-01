@@ -4,6 +4,9 @@ import { SessionProvider } from "next-auth/react";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider } from "next-themes";
 import { Poppins } from "next/font/google";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import Router from "next/router";
 
 import { api } from "@/utils/api";
 
@@ -23,6 +26,14 @@ const Toaster = dynamic(
     ssr: false,
   }
 );
+
+NProgress.configure({ showSpinner: false })
+NProgress.configure({ easing: 'ease', speed: 500 })
+NProgress.configure({ trickleSpeed: 800 })
+
+Router.events.on('routeChangeStart', () => NProgress.start())
+Router.events.on('routeChangeComplete', () => NProgress.done())
+Router.events.on('routeChangeError', () => NProgress.done())
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

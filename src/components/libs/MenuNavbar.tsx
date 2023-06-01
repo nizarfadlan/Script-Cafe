@@ -1,5 +1,5 @@
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link, NavbarItem, NavbarMenuItem } from "@nextui-org/react";
-import type { Menu, ChildMenu } from "@/types/menu.type";
+import type { Menu } from "@/types/menu.type";
 import { usePathname } from "next/navigation";
 import NextLink from "./NextLink";
 import { useRouter } from "next/router";
@@ -7,7 +7,6 @@ import { ChevronDownIcon, IconsDefault } from "./Icons";
 import React from "react";
 import { useSession } from "next-auth/react";
 import type { Role } from "@prisma/client";
-import type { Session } from "next-auth";
 
 export function MenuNavbar({
   items
