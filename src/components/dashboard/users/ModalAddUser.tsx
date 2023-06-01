@@ -67,7 +67,6 @@ export default function ModalAddUser({ isOpen, onOpenChange, onSuccess }: Props)
                   {...register("name", {
                     required: true,
                   })}
-                  autoFocus
                   label="Name"
                   placeholder="Enter your name"
                   variant="bordered"

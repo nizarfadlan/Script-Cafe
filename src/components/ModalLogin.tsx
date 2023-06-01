@@ -54,7 +54,6 @@ export default function ModalLogin({ isOpen, onOpenChange }: DefaultPropsModal) 
               <ModalBody>
                 <Input
                   {...register("email")}
-                  autoFocus
                   startContent={
                     <MailFilledIcon className="flex-shrink-0 text-2xl pointer-events-none text-neutral-400" />
                   }

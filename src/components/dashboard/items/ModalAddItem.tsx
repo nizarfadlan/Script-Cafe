@@ -60,7 +60,6 @@ export default function ModalAddItem({ isOpen, onOpenChange, onSuccess }: Props)
                   {...register("name", {
                     required: true,
                   })}
-                  autoFocus
                   label="Name"
                   placeholder="Enter name item"
                   variant="bordered"
