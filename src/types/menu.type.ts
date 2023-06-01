@@ -4,7 +4,7 @@ export type ChildMenu = {
   key: string,
   name: string,
   href: string,
-  icons?: React.ReactNode,
+  icons?: React.ReactNode | Element,
   description?: string,
   permissions?: Role[] | undefined,
 }

@@ -58,10 +58,26 @@ export function MenuNavbar({
                           });
                         }}
                       >
-                        <DropDownItem
-                          items={menu?.items}
-                          session={data}
-                        />
+                        {menu.items.filter(
+                            (item) =>
+                              (item.permissions &&
+                                item.permissions.includes(data?.user?.role as Role)) ||
+                              !item.permissions
+                          ).map((item) => (
+                          <DropdownItem
+                            key={item.key}
+                            description={item.description}
+                            startContent={
+                              item.icons ? (
+                                item.icons
+                              ) : (
+                                <IconsDefault fill="currentColor" size={35} />
+                              )
+                            }
+                          >
+                            {item.name}
+                          </DropdownItem>
+                        ))}
                       </DropdownMenu>
                     </Dropdown>
                   </>
@@ -75,39 +91,6 @@ export function MenuNavbar({
               </>
             ) : null}
         </React.Fragment>
-      ))}
-    </>
-  );
-}
-
-const DropDownItem: React.FC<{
-  items: ChildMenu[];
-  session: Session | null;
-}> = ({ items, session }) => {
-  const roleUser = session?.user?.role ?? "";
-  const itemsFilter = items.filter(
-    (item) =>
-      (item.permissions &&
-        item.permissions.includes(roleUser as Role)) ||
-      !item.permissions
-  )
-
-  return (
-    <>
-      {itemsFilter.map((item) => (
-        <DropdownItem
-          key={item.key}
-          description={item.description}
-          startContent={
-            item.icons ? (
-              item.icons
-            ) : (
-              <IconsDefault fill="currentColor" size={35} />
-            )
-          }
-        >
-          {item.name}
-        </DropdownItem>
       ))}
     </>
   );
