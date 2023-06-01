@@ -11,7 +11,7 @@ import { prisma } from "@/server/db";
 import { api } from "@/utils/api";
 import moment from "moment";
 import { CardItem } from "@/components/dashboard/packagesItem/CardPackageItem";
-import { IItemsOnPackage } from "@/types/packateItem.type";
+import type { IItemsOnPackage } from "@/types/packateItem.type";
 
 export const getServerSideProps = async (
   ctx: GetServerSidePropsContext
