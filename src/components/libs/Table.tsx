@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import {EditIcon, DeleteIcon, EyeIcon} from "@nextui-org/shared-icons";
 import { DeletePopUp } from "./DeletePopup";
 
-type LoadingState = 'loading' | 'sorting' | 'loadingMore' | 'error' | 'idle' | 'filtering';
-
 export interface TableActions {
   edit: (id: string) => Promise<void> | void;
   delete: (id: string) => void;
