@@ -1,4 +1,4 @@
-import { Chip, type ChipProps, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, User, Button, Spinner, useDisclosure } from "@nextui-org/react";
+import { Chip, type ChipProps, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, User, Button, useDisclosure } from "@nextui-org/react";
 import React, { useState } from "react";
 import {EditIcon, DeleteIcon, EyeIcon} from "@nextui-org/shared-icons";
 import { DeletePopUp } from "./DeletePopup";
@@ -31,7 +31,6 @@ interface TableDataProps {
   data: TableData[];
   actions: TableActions;
   isLoading?: boolean;
-  loadingState?: LoadingState;
   loadMore?: () => void;
   cursor?: string;
 }
@@ -41,7 +40,6 @@ export default function TableDynamic({
   data,
   actions,
   isLoading,
-  loadingState,
   loadMore,
   cursor,
 }: TableDataProps) {
@@ -161,8 +159,8 @@ export default function TableDynamic({
                 isDisabled={isLoading}
                 variant="flat"
                 onPress={loadMore}
+                isLoading={isLoading}
               >
-                {isLoading && <Spinner color="white" size="sm" />}
                 Load More
               </Button>
             </div>
@@ -178,8 +176,6 @@ export default function TableDynamic({
         </TableHeader>
         <TableBody
           emptyContent={"No data to display."}
-          loadingContent={<Spinner color="secondary" />}
-          loadingState={loadingState}
           items={data}
         >
           {(item) => (

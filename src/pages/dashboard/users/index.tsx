@@ -30,7 +30,7 @@ const Users: NextPage = () => {
   const [search, setSearch] = useState<string>("");
   const [user, setUser] = useState<string>("");
 
-  const { data, fetchNextPage, isLoading, isError, isFetching, refetch } = api.user.getAll.useInfiniteQuery(
+  const { data, fetchNextPage, isLoading, isError, refetch } = api.user.getAll.useInfiniteQuery(
     {
       limit: 10,
       skip: (page - 1) * 10,
@@ -110,7 +110,6 @@ const Users: NextPage = () => {
     }
   }) || [];
   const cursor = pageData[page-1]?.nextCursor;
-  const loadingState = isFetching ? "loadingMore" : "idle";
 
   const actions: TableActions = {
     detail: handleDetail,
@@ -154,8 +153,7 @@ const Users: NextPage = () => {
             columns={columns}
             data={users}
             actions={actions}
-            isLoading={isFetching}
-            loadingState={loadingState}
+            isLoading={isLoading}
             loadMore={handleFetchNextPage}
             cursor={cursor}
           />

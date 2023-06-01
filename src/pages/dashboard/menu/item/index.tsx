@@ -37,7 +37,7 @@ const Item: NextPage = () => {
     [limit],
   );
 
-  const { data, fetchNextPage, isLoading, isError, isFetching, refetch } = api.item.getAll.useInfiniteQuery(
+  const { data, fetchNextPage, isLoading, isError, refetch } = api.item.getAll.useInfiniteQuery(
     {
       limit: parseInt(limitValue),
       skip: (page - 1) * parseInt(limitValue),
@@ -120,7 +120,6 @@ const Item: NextPage = () => {
     }
   }) || [];
   const cursor = pageData[page-1]?.nextCursor;
-  const loadingState = isFetching ? "loadingMore" : "idle";
 
   const actions: TableActions = {
     detail: handleDetail,
@@ -246,8 +245,7 @@ const Item: NextPage = () => {
             columns={columns}
             data={items}
             actions={actions}
-            isLoading={isFetching}
-            loadingState={loadingState}
+            isLoading={isLoading}
             loadMore={handleFetchNextPage}
             cursor={cursor}
           />

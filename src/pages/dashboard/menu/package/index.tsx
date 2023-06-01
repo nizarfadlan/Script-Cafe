@@ -32,7 +32,7 @@ const PackageItem: NextPage = () => {
     [limit],
   );
 
-  const { data, fetchNextPage, isLoading, isError, isFetching, refetch } = api.packageItem.getAll.useInfiniteQuery(
+  const { data, fetchNextPage, isLoading, isError, refetch } = api.packageItem.getAll.useInfiniteQuery(
     {
       limit: parseInt(limitValue),
       skip: (page - 1) * parseInt(limitValue),
@@ -122,7 +122,6 @@ const PackageItem: NextPage = () => {
     }
   }) || [];
   const cursor = pageData[page-1]?.nextCursor;
-  const loadingState = isFetching ? "loadingMore" : "idle";
 
   const actions: TableActions = {
     detail: handleDetail,
@@ -248,8 +247,7 @@ const PackageItem: NextPage = () => {
             columns={columns}
             data={packageItems}
             actions={actions}
-            isLoading={isFetching}
-            loadingState={loadingState}
+            isLoading={isLoading}
             loadMore={handleFetchNextPage}
             cursor={cursor}
           />
