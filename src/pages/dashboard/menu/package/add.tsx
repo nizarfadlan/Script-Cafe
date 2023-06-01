@@ -14,6 +14,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import type { IndexableType } from "dexie";
 
 const AddPackageItem: NextPage = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const AddPackageItem: NextPage = () => {
   }: IItemsOnPackage) => {
     const data = await itemsOnPackageTable.where("id").equals(id).limit(1).toArray();
 
-    let save: number | string;
+    let save: number | string | IndexableType;
     if (data.length > 0) {
       const itemDataOld: IItemsOnPackage = data[0] as IItemsOnPackage;
       save = await itemsOnPackageTable.update(id, { quantity: itemDataOld.quantity + Number(quantity) });

@@ -20,6 +20,7 @@ import type { IItemsOnPackage } from "@/types/packateItem.type";
 import { editItemsOnPackageTable } from "database.config";
 import { useLiveQuery } from "dexie-react-hooks";
 import { CardItem } from "@/components/dashboard/packagesItem/CardPackageItem";
+import type { IndexableType } from "dexie";
 
 export const getServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -142,7 +143,7 @@ const PackageItemEdit = (
   }: IItemsOnPackage) => {
     const data = await editItemsOnPackageTable.where("id").equals(id).limit(1).toArray();
 
-    let save: number | string;
+    let save: number | string | IndexableType;
     if (data.length > 0) {
       const itemDataOld: IItemsOnPackage = data[0] as IItemsOnPackage;
       save = await editItemsOnPackageTable.update(id, { quantity: itemDataOld.quantity + Number(quantity) });
