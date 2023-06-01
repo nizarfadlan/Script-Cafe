@@ -72,7 +72,7 @@ const Users: NextPage = () => {
   };
 
   const handleEdit = async (id: string) => {
-    await router.push(`/dashboard/users/${id}`);
+    await router.replace(`/dashboard/users/${id}`);
   };
 
   const handleDelete = (id: string) => {

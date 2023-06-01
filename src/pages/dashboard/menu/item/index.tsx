@@ -80,7 +80,7 @@ const Item: NextPage = () => {
   };
 
   const handleEdit = async (id: string): Promise<void> => {
-    await router.push(`/dashboard/menu/item/${id}`);
+    await router.replace(`/dashboard/menu/item/${id}`);
   };
 
   const handleDelete = (id: string): void => {

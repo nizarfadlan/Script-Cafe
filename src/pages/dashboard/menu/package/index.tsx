@@ -70,11 +70,11 @@ const PackageItem: NextPage = () => {
   }
 
   const handleDetail = async (id: string): Promise<void> => {
-    await router.push(`/dashboard/menu/package/${id}`);
+    await router.replace(`/dashboard/menu/package/${id}`);
   };
 
   const handleEdit = async (id: string): Promise<void> => {
-    await router.push(`/dashboard/menu/package/${id}/edit`);
+    await router.replace(`/dashboard/menu/package/${id}/edit`);
   };
 
   const handleDelete = (id: string): void => {
