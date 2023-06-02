@@ -303,7 +303,6 @@ const UserEdit = (
                             type={isPasswordVisible ? "text" : "password"}
                             variant="bordered"
                             validationState={errorsPassword.body?.oldPassword ? "invalid" : "valid"}
-                            classNames={{ base: "mb-12" }}
                             id="oldPassword"
                             isRequired
                             errorMessage={errorsPassword.body?.oldPassword && errorsPassword.body?.oldPassword?.message}
@@ -326,7 +325,6 @@ const UserEdit = (
                             type={isPasswordVisible ? "text" : "password"}
                             variant="bordered"
                             validationState={errorsPassword.body?.newPassword ? "invalid" : "valid"}
-                            classNames={{ base: "mb-12" }}
                             id="newPassword"
                             isRequired
                             errorMessage={errorsPassword.body?.newPassword && errorsPassword.body?.newPassword?.message}
@@ -349,7 +347,6 @@ const UserEdit = (
                             type={isPasswordVisible ? "text" : "password"}
                             variant="bordered"
                             validationState={errorsPassword.body?.newPasswordConfirm ? "invalid" : "valid"}
-                            classNames={{ base: "mb-12" }}
                             id="newPasswordConfirm"
                             isRequired
                             errorMessage={errorsPassword.body?.newPasswordConfirm && errorsPassword.body?.newPasswordConfirm?.message}

@@ -14,7 +14,7 @@ export default function Toggle({
   return (
     <>
       <Switch
-        className="inline-flex flex-row-reverse w-full max-w-md items-center justify-between cursor-pointer rounded-lg gap-0 p-4 border-2 border-neutral-200 data-[hover=true]:border-neutral-400 focus-within:!border-foreground"
+        className="inline-flex flex-row-reverse w-full max-w-md items-center justify-between cursor-pointer rounded-lg gap-0 p-4 border-2 border-default-200 data-[hover=true]:border-default-400 focus-within:!border-foreground"
         size="sm"
         color="secondary"
         isSelected={value}

@@ -87,7 +87,7 @@ export default function ModalLogin({ isOpen, onOpenChange }: DefaultPropsModal) 
                   name="password"
                   validationState={errors.password ? "invalid" : "valid"}
                   errorMessage={errors.password ? errors.password?.message : "Password is required"}
-                  classNames={{ base: "mb-12" }}
+                  classNames={{ base: "mb-2" }}
                   id="password"
                   isRequired
                 />
