@@ -56,6 +56,7 @@ export default function ModalAddUser({ onSuccess }: Props) {
         startIcon={<PlusIcon fill="currentColor" size={20} />}
         variant="shadow"
         color="secondary"
+        aria-label="modal-add-user"
         onPress={onOpen}
       >
         <p className="sr-only sm:not-sr-only">Add User</p>
@@ -63,6 +64,7 @@ export default function ModalAddUser({ onSuccess }: Props) {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        aria-labelledby="modal-add-user"
       >
         <ModalContent>
           {(onClose) => (

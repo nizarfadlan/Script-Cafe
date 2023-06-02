@@ -239,6 +239,7 @@ const PackageItemEdit = (
                           <div className="grid items-center grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             <div className="col-span-1">
                               <div
+                                aria-label="modal-add-item-on-package"
                                 onClick={onOpenModalAdd}
                                 className="w-full flex justify-center h-[320px] px-4 transition border-2 border-neutral-200 hover:border-neutral-400 focus-within:!border-foreground border-dashed rounded-md appearance-none cursor-pointer focus:outline-none">
                                 <span className="flex items-center space-x-2">

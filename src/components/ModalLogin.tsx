@@ -41,6 +41,7 @@ export default function ModalLogin({ isOpen, onOpenChange }: DefaultPropsModal) 
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
+      aria-labelledby="modal-login"
     >
       <ModalContent>
         {(onClose) => (

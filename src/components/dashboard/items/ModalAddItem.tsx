@@ -50,12 +50,14 @@ export default function ModalAddItem({ onSuccess }: Props) {
         variant="shadow"
         color="secondary"
         onPress={onOpen}
+        aria-label="modal-add-item"
       >
         <p className="sr-only sm:not-sr-only">Add Item</p>
       </Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        aria-labelledby="modal-add-item"
       >
         <ModalContent>
           {(onClose) => (

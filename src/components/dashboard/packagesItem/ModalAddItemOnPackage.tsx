@@ -25,6 +25,7 @@ export default function ModalAddItemOnPackage({ isOpen, onOpenChange, onSave }: 
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
+      aria-labelledby="modal-add-item-on-package"
     >
       <ModalContent>
         {(onClose) => (
