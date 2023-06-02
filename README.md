@@ -58,4 +58,18 @@ This program is made up of:
 
 ## Thanks to
 
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
+
+# Special Thanks
+
 - [T3 Stack](https://create.t3.gg/)
+- [Community NextUI](https://discord.gg/9b6yyZKmH4)
+- [Vercel](https://vercel.com)
+
+## License
+
+MIT © [Nizar Fadlan](https://nizarfadlan.dev)
