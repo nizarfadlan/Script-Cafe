@@ -160,7 +160,6 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     type={isPasswordVisible ? "text" : "password"}
                     variant="bordered"
                     validationState={errors.passwordConfirm ? "invalid" : "valid"}
-                    classNames={{ base: "mb-4" }}
                     id="Enter your password again"
                     isRequired
                     errorMessage={errors.passwordConfirm && errors.passwordConfirm?.message}

@@ -61,7 +61,7 @@ export default function ModalLogin({ isOpen, onOpenChange }: DefaultPropsModal) 
                   type="email"
                   name="email"
                   validationState={errors.email ? "invalid" : "valid"}
-                  errorMessage={errors.email ? errors.email?.message : "Email is required"}
+                  errorMessage={errors.email && errors.email?.message}
                   id="email"
                   isRequired
                 />
@@ -85,13 +85,12 @@ export default function ModalLogin({ isOpen, onOpenChange }: DefaultPropsModal) 
                   variant="bordered"
                   name="password"
                   validationState={errors.password ? "invalid" : "valid"}
-                  errorMessage={errors.password ? errors.password?.message : "Password is required"}
-                  classNames={{ base: "mb-2" }}
+                  errorMessage={errors.password && errors.password?.message}
                   id="password"
                   isRequired
                 />
                 {errors.root && (
-                  <p className="text-xs text-red-500">{errors.root?.message}</p>
+                  <p className="my-2 text-xs text-red-500">{errors.root?.message}</p>
                 )}
                 <div className="flex justify-between px-1 py-2">
                   <Checkbox
