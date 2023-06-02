@@ -93,7 +93,7 @@ export default function NavbarComponent({
             </Dropdown>
           :
             <NavbarItem>
-              <Button color="secondary" onPress={() => onOpen} aria-label="modal-title">
+              <Button color="secondary" onPress={onOpen} aria-label="modal-title">
                 Sign In
               </Button>
             </NavbarItem>
