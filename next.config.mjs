@@ -9,8 +9,8 @@ import nextPWA from "next-pwa";
 
 const withPWA = nextPWA({
 	dest: "public",
-  register: false,
-  skipWaiting: false,
+  register: true,
+  skipWaiting: true,
   dynamicStartUrl: false,
   disable: process.env.NODE_ENV === "development",
   cacheOnFrontEndNav: true,

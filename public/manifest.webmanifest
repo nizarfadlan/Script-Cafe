@@ -7,7 +7,7 @@
     "name": "Script Cafe",
     "lang": "en-ID",
     "short_name": "SCafe",
-    "prefer_related_applications": false,
+    "prefer_related_applications": true,
     "description": "Script Cafe is a cafe that provides decent facilities that are useful for programmers",
     "icons": [
         {
