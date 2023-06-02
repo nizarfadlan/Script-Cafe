@@ -3,7 +3,7 @@
     "background_color": "#ffffff",
     "display": "standalone",
     "orientation": "portrait-primary",
-    "start_url": "/?source=pwa",
+    "start_url": "/",
     "name": "Script Cafe",
     "lang": "en-ID",
     "short_name": "SCafe",

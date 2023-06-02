@@ -15,6 +15,10 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+          />
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="robots" content="index, follow" />
           <meta name="description" content="Script Cafe is a cafe that provides decent facilities that are useful for programmers" />
