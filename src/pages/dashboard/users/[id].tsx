@@ -6,7 +6,7 @@ import { appRouter } from "@/server/api/root";
 import { prisma } from "@/server/db";
 import superjson from "superjson";
 import LayoutDashboard from "@/components/dashboard/Layout";
-import { Button, Card, CardBody, CardFooter, CardHeader, Input, Spinner, TabItem, Tabs } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Input, Spinner, Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import { api } from "@/utils/api";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -204,7 +204,7 @@ const UserEdit = (
                   onSelectionChange={setSelected}
                   className="w-full"
                 >
-                  <TabItem key="editInfo" title="Edit Profile">
+                  <Tab key="editInfo" title="Edit Profile">
                     <Card className="w-full p-3">
                       <CardHeader className="text-lg">
                         <h1>Informasi User</h1>
@@ -216,13 +216,13 @@ const UserEdit = (
                               {...register("body.name", {
                                 required: true,
                               })}
-                              defaultValue={user.name}
+                              defaultValue={user.name?.toString()}
                               autoFocus
                               label="Name"
                               placeholder="Enter your name"
                               variant="bordered"
                               type="text"
-                              status={errors.body?.name ? "error" : "default"}
+                              validationState={errors.body?.name ? "invalid" : "valid"}
                               id="name"
                               isRequired
                               errorMessage={errors.body?.name && errors.body?.name?.message}
@@ -231,12 +231,12 @@ const UserEdit = (
                               {...register("body.email", {
                                 required: true,
                               })}
-                              defaultValue={user.email}
+                              defaultValue={user.email?.toString()}
                               label="Email"
                               placeholder="Enter your email"
                               variant="bordered"
                               type="email"
-                              status={errors.body?.email ? "error" : "default"}
+                              validationState={errors.body?.email ? "invalid" : "valid"}
                               id="email"
                               isRequired
                               errorMessage={errors.body?.email && errors.body?.email?.message}
@@ -276,8 +276,8 @@ const UserEdit = (
                         </CardFooter>
                       </form>
                     </Card>
-                  </TabItem>
-                  <TabItem key="changePassword" title="Change Password">
+                  </Tab>
+                  <Tab key="changePassword" title="Change Password">
                     <Card className="w-full p-3">
                       <CardHeader  className="text-lg">
                         <h1>Change Password</h1>
@@ -302,8 +302,8 @@ const UserEdit = (
                             placeholder="Enter your old password"
                             type={isPasswordVisible ? "text" : "password"}
                             variant="bordered"
-                            status={errorsPassword.body?.oldPassword ? "error" : "default"}
-                            css={{ mb: "$12" }}
+                            validationState={errorsPassword.body?.oldPassword ? "invalid" : "valid"}
+                            classNames={{ base: "mb-12" }}
                             id="oldPassword"
                             isRequired
                             errorMessage={errorsPassword.body?.oldPassword && errorsPassword.body?.oldPassword?.message}
@@ -325,8 +325,8 @@ const UserEdit = (
                             placeholder="Enter your new password"
                             type={isPasswordVisible ? "text" : "password"}
                             variant="bordered"
-                            status={errorsPassword.body?.newPassword ? "error" : "default"}
-                            css={{ mb: "$12" }}
+                            validationState={errorsPassword.body?.newPassword ? "invalid" : "valid"}
+                            classNames={{ base: "mb-12" }}
                             id="newPassword"
                             isRequired
                             errorMessage={errorsPassword.body?.newPassword && errorsPassword.body?.newPassword?.message}
@@ -348,8 +348,8 @@ const UserEdit = (
                             placeholder="Enter your new password again"
                             type={isPasswordVisible ? "text" : "password"}
                             variant="bordered"
-                            status={errorsPassword.body?.newPasswordConfirm ? "error" : "default"}
-                            css={{ mb: "$12" }}
+                            validationState={errorsPassword.body?.newPasswordConfirm ? "invalid" : "valid"}
+                            classNames={{ base: "mb-12" }}
                             id="newPasswordConfirm"
                             isRequired
                             errorMessage={errorsPassword.body?.newPasswordConfirm && errorsPassword.body?.newPasswordConfirm?.message}
@@ -367,7 +367,7 @@ const UserEdit = (
                         </CardFooter>
                       </form>
                     </Card>
-                  </TabItem>
+                  </Tab>
                 </Tabs>
               </section>
             )

@@ -149,7 +149,7 @@ const ItemEdit = (
                             label="Name"
                             placeholder="Enter name of item"
                             variant="bordered"
-                            status={errors.body?.name ? "error" : "default"}
+                            validationState={errors.body?.name ? "invalid" : "valid"}
                             id="name"
                             isRequired
                             errorMessage={errors.body?.name && errors.body?.name?.message}
@@ -159,11 +159,11 @@ const ItemEdit = (
                               required: true,
                               valueAsNumber: true,
                             })}
-                            defaultValue={item.price}
+                            defaultValue={item.price.toString()}
                             label="Price"
                             placeholder="Enter price of item"
                             variant="bordered"
-                            status={errors.body?.price ? "error" : "default"}
+                            validationState={errors.body?.price ? "invalid" : "valid"}
                             id="price"
                             isRequired
                             errorMessage={errors.body?.price && errors.body?.price?.message}
@@ -172,11 +172,11 @@ const ItemEdit = (
                             {...register("body.discountPercent", {
                               setValueAs: (v: string) => v === "" ? undefined : parseInt(v, 10),
                             })}
-                            defaultValue={item?.discountPercent}
+                            defaultValue={item?.discountPercent?.toString() ?? ""}
                             label="Discount"
                             placeholder="Enter discount of item"
                             variant="bordered"
-                            status={errors.body?.discountPercent ? "error" : "default"}
+                            validationState={errors.body?.discountPercent ? "invalid" : "valid"}
                             id="price"
                             isRequired
                             errorMessage={errors.body?.discountPercent && errors.body?.discountPercent?.message}

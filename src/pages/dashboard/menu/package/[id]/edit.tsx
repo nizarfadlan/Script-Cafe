@@ -203,7 +203,7 @@ const PackageItemEdit = (
                             label="Name"
                             placeholder="Enter name package item"
                             variant="bordered"
-                            status={errors.body?.name ? "error" : "default"}
+                            validationState={errors.body?.name ? "invalid" : "valid"}
                             id="name"
                             isRequired
                             errorMessage={errors.body?.name && errors.body?.name?.message}
@@ -214,11 +214,11 @@ const PackageItemEdit = (
                                 required: true,
                                 valueAsNumber: true,
                               })}
-                              defaultValue={packageItem.price}
+                              defaultValue={packageItem.price.toString()}
                               label="Price"
                               placeholder="Enter price package item"
                               variant="bordered"
-                              status={errors.body?.price ? "error" : "default"}
+                              validationState={errors.body?.price ? "invalid" : "valid"}
                               id="price"
                               isRequired
                               errorMessage={errors.body?.price && errors.body?.price?.message}
@@ -227,11 +227,11 @@ const PackageItemEdit = (
                               {...register("body.discountPercent", {
                                 setValueAs: (v: string) => v === "" ? undefined : parseInt(v, 10),
                               })}
-                              defaultValue={packageItem?.discountPercent}
+                              defaultValue={packageItem?.discountPercent?.toString() ?? ""}
                               label="Discount Percent"
                               placeholder="Enter discount package item"
                               variant="bordered"
-                              status={errors.body?.discountPercent ? "error" : "default"}
+                              validationState={errors.body?.discountPercent ? "invalid" : "valid"}
                               id="discount"
                               errorMessage={errors.body?.discountPercent && errors.body?.discountPercent?.message}
                             />
@@ -274,7 +274,7 @@ const PackageItemEdit = (
                     className="p-3 border-none h-max"
                   >
                     <CardHeader className="text-lg">
-                      <h1>Status</h1>
+                      <h1>validationState</h1>
                     </CardHeader>
                     <CardBody className="flex flex-col items-center justify-center text-rose-400 fill-rose-400">
                       <FailedIcon fill="inherit" size={80} />
