@@ -121,7 +121,7 @@ export function MenuCollapseNavbar({
                       <Link
                         size="lg"
                         color={
-                          pathname === menu.href ? "primary" : "foreground"
+                          pathname === menu.href ? "secondary" : "foreground"
                         }
                       >
                         {menu.name}
@@ -148,7 +148,7 @@ export function MenuCollapseNavbar({
                                 <Link
                                   size="lg"
                                   color={
-                                    pathname === menu.href ? "primary" : "foreground"
+                                    pathname === menu.href ? "secondary" : "foreground"
                                   }
                                 >
                                   {item.name}

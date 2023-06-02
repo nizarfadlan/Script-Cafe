@@ -73,7 +73,7 @@ export default function ModalAddItem({ onSuccess }: Props) {
                     label="Name"
                     placeholder="Enter name item"
                     variant="bordered"
-                    status={errors.name ? "error" : "default"}
+                    validationState={errors.name ? "invalid" : "valid"}
                     id="name"
                     isRequired
                     errorMessage={errors.name && errors.name?.message}
@@ -87,7 +87,7 @@ export default function ModalAddItem({ onSuccess }: Props) {
                     label="Price"
                     placeholder="Enter price item"
                     variant="bordered"
-                    status={errors.price ? "error" : "default"}
+                    validationState={errors.price ? "invalid" : "valid"}
                     id="price"
                     isRequired
                     errorMessage={errors.price && errors.price?.message}
@@ -100,7 +100,7 @@ export default function ModalAddItem({ onSuccess }: Props) {
                     label="Discount Percent"
                     placeholder="Enter discount item"
                     variant="bordered"
-                    status={errors.discountPercent ? "error" : "default"}
+                    validationState={errors.discountPercent ? "invalid" : "valid"}
                     id="discount"
                     errorMessage={errors.discountPercent && errors.discountPercent?.message}
                   />

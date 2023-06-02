@@ -178,8 +178,8 @@ const PackageItem: NextPage = () => {
                         placeholder="Search item..."
                         value={search}
                         onValueChange={setSearch}
-                        size="sm"
                         startContent={<SearchIcon size={18} />}
+                        isClearable
                       />
                     </div>
                     <div>

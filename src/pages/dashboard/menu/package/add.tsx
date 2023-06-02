@@ -115,7 +115,7 @@ const AddPackageItem: NextPage = () => {
                 label="Name"
                 placeholder="Enter name package item"
                 variant="bordered"
-                status={errors.name ? "error" : "default"}
+                validationState={errors.name ? "invalid" : "valid"}
                 id="name"
                 isRequired
                 errorMessage={errors.name && errors.name?.message}
@@ -129,7 +129,7 @@ const AddPackageItem: NextPage = () => {
                   label="Price"
                   placeholder="Enter price package item"
                   variant="bordered"
-                  status={errors.price ? "error" : "default"}
+                  validationState={errors.price ? "invalid" : "valid"}
                   id="price"
                   isRequired
                   errorMessage={errors.price && errors.price?.message}
@@ -141,7 +141,7 @@ const AddPackageItem: NextPage = () => {
                   label="Discount Percent"
                   placeholder="Enter discount package item"
                   variant="bordered"
-                  status={errors.discountPercent ? "error" : "default"}
+                  validationState={errors.discountPercent ? "invalid" : "valid"}
                   id="discount"
                   errorMessage={errors.discountPercent && errors.discountPercent?.message}
                 />

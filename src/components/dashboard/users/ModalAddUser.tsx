@@ -81,7 +81,7 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     placeholder="Enter your name"
                     variant="bordered"
                     type="text"
-                    status={errors.name ? "error" : "default"}
+                    validationState={errors.name ? "invalid" : "valid"}
                     id="name"
                     isRequired
                     errorMessage={errors.name && errors.name?.message}
@@ -94,7 +94,7 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     placeholder="Enter your email"
                     variant="bordered"
                     type="email"
-                    status={errors.email ? "error" : "default"}
+                    validationState={errors.email ? "invalid" : "valid"}
                     id="email"
                     isRequired
                     errorMessage={errors.email && errors.email?.message}
@@ -138,8 +138,8 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     placeholder="Enter your password"
                     type={isPasswordVisible ? "text" : "password"}
                     variant="bordered"
-                    status={errors.password ? "error" : "default"}
-                    css={{ mb: "$12" }}
+                    validationState={errors.password ? "invalid" : "valid"}
+                    classNames={{ base: "mb-12" }}
                     id="password"
                     isRequired
                     errorMessage={errors.password && errors.password?.message}
@@ -161,8 +161,8 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     placeholder="Enter your password again"
                     type={isPasswordVisible ? "text" : "password"}
                     variant="bordered"
-                    status={errors.password ? "error" : "default"}
-                    css={{ mb: "$12" }}
+                    validationState={errors.passwordConfirm ? "invalid" : "valid"}
+                    classNames={{ base: "mb-12" }}
                     id="Enter your password again"
                     isRequired
                     errorMessage={errors.passwordConfirm && errors.passwordConfirm?.message}

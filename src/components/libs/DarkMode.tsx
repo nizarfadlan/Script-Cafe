@@ -12,7 +12,7 @@ export default function DarkMode() {
         isIconOnly
         size="md"
         variant="light"
-        color="neutral"
+        color="default"
         onPress={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "dark" ? <LightIcon size={20} /> : <MoonIcon size={20} />}

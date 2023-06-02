@@ -65,7 +65,7 @@ export default function ModalAddItemOnPackage({ isOpen, onOpenChange, onSave }: 
                   label="Quantity"
                   placeholder="Enter quantity item"
                   variant="bordered"
-                  status={errors.quantity ? "error" : "default"}
+                  validationState={errors.quantity ? "invalid" : "valid"}
                   id="quantity"
                   isRequired
                   errorMessage={errors.quantity && errors.quantity?.message}

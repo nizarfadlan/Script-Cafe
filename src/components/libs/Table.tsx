@@ -148,7 +148,7 @@ export default function TableDynamic({
             'group-data-[last=true]:border-b-0'
           ],
         }}
-        color="neutral"
+        color="default"
         isHeaderSticky
         bottomContent={
           cursor ? (

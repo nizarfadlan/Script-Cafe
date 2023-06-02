@@ -61,8 +61,8 @@ export default function ModalLogin({ isOpen, onOpenChange }: DefaultPropsModal) 
                   variant="bordered"
                   type="email"
                   name="email"
-                  status={errors.email ? "error" : "default"}
-                  helperText={errors.email ? errors.email?.message : "Email is required"}
+                  validationState={errors.email ? "invalid" : "valid"}
+                  errorMessage={errors.email ? errors.email?.message : "Email is required"}
                   id="email"
                   isRequired
                 />
@@ -85,9 +85,9 @@ export default function ModalLogin({ isOpen, onOpenChange }: DefaultPropsModal) 
                   type={isPasswordVisible ? "text" : "password"}
                   variant="bordered"
                   name="password"
-                  status={errors.password ? "error" : "default"}
-                  helperText={errors.password ? errors.password?.message : "Password is required"}
-                  css={{ mb: "$12" }}
+                  validationState={errors.password ? "invalid" : "valid"}
+                  errorMessage={errors.password ? errors.password?.message : "Password is required"}
+                  classNames={{ base: "mb-12" }}
                   id="password"
                   isRequired
                 />
