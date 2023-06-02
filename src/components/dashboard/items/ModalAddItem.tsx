@@ -14,7 +14,7 @@ interface Props extends DefaultPropsModal {
 
 export default function ModalAddItem({ onSuccess }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { mutate } = api.item.createItem.useMutation({
+  const { mutate, isLoading } = api.item.createItem.useMutation({
     onSuccess: async() => {
       await onSuccess();
       onOpenChange();
@@ -31,7 +31,7 @@ export default function ModalAddItem({ onSuccess }: Props) {
     }
   });
 
-  const { control, register, handleSubmit, formState: { errors, isSubmitting, defaultValues } } = useForm<CreateItemInput>({
+  const { control, register, handleSubmit, formState: { errors, defaultValues } } = useForm<CreateItemInput>({
     mode: "onChange",
     defaultValues: {
       available: true,
@@ -126,10 +126,10 @@ export default function ModalAddItem({ onSuccess }: Props) {
                   )}
                 </ModalBody>
                 <ModalFooter>
-                  <Button type="button" variant="flat" color="danger" onPress={onClose} disabled={isSubmitting}>
+                  <Button type="button" variant="flat" color="danger" onPress={onClose} disabled={isLoading}>
                     Close
                   </Button>
-                  <Button color="secondary" type="submit" isDisabled={isSubmitting} isLoading={isSubmitting}>
+                  <Button color="secondary" type="submit" isDisabled={isLoading} isLoading={isLoading}>
                     Submit
                   </Button>
                 </ModalFooter>

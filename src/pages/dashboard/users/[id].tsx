@@ -93,7 +93,7 @@ const UserEdit = (
     },
   });
 
-  const { mutate: mutatePassword } = api.user.updatePassword.useMutation({
+  const { mutate: mutatePassword, isLoading: loadingPassword } = api.user.updatePassword.useMutation({
     onSuccess: async() => {
       toastCustom({
         type: "success",
@@ -111,7 +111,7 @@ const UserEdit = (
     }
   });
 
-  const { mutate: mutateUser } = api.user.updateUser.useMutation({
+  const { mutate: mutateUser, isLoading: loadingUser } = api.user.updateUser.useMutation({
     onSuccess: async() => {
       toastCustom({
         type: "success",
@@ -141,12 +141,12 @@ const UserEdit = (
 
   const isBlocked = user?.blockExpires && new Date(user?.blockExpires) > new Date();
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<UpdateUserInput>({
+  const { register, handleSubmit, formState: { errors } } = useForm<UpdateUserInput>({
     mode: "onChange",
     resolver: zodResolver(updateUserSchema)
   });
 
-  const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: errorsPassword, isSubmitting: isSubmittingPassword } } = useForm<UpdatePasswordInput>({
+  const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: errorsPassword } } = useForm<UpdatePasswordInput>({
     mode: "onChange",
     resolver: zodResolver(updatePasswordSchema)
   });
@@ -268,8 +268,8 @@ const UserEdit = (
                           <Button
                             color="secondary"
                             type="submit"
-                            isDisabled={isSubmitting}
-                            isLoading={isSubmitting}
+                            isDisabled={loadingUser}
+                            isLoading={loadingUser}
                           >
                             Submit
                           </Button>
@@ -356,8 +356,8 @@ const UserEdit = (
                           <Button
                             color="secondary"
                             type="submit"
-                            isDisabled={isSubmittingPassword}
-                            isLoading={isSubmittingPassword}
+                            isDisabled={loadingPassword}
+                            isLoading={loadingPassword}
                           >
                             Submit
                           </Button>

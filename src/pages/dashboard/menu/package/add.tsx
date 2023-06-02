@@ -50,7 +50,7 @@ const AddPackageItem: NextPage = () => {
     }
   }, []);
 
-  const { mutate } = api.packageItem.createPackage.useMutation({
+  const { mutate, isLoading } = api.packageItem.createPackage.useMutation({
     onSuccess: async() => {
       toastCustom({
         type: "success",
@@ -71,7 +71,7 @@ const AddPackageItem: NextPage = () => {
     }
   });
 
-  const { register, reset, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<CreatePackageInput>({
+  const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm<CreatePackageInput>({
     mode: "onChange",
     resolver: zodResolver(createPackageSchema)
   });
@@ -166,7 +166,7 @@ const AddPackageItem: NextPage = () => {
               </div>
             </CardBody>
             <CardFooter className="flex justify-end">
-              <Button color="secondary" type="submit" isDisabled={isSubmitting} isLoading={isSubmitting}>
+              <Button color="secondary" type="submit" isDisabled={isLoading} isLoading={isLoading}>
                 Submit
               </Button>
             </CardFooter>

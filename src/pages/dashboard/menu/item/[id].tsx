@@ -68,7 +68,7 @@ const ItemEdit = (
     }
   });
 
-  const { mutate: mutateStatus } = api.item.updateAvailableItem.useMutation({
+  const { mutate: mutateStatus, isLoading } = api.item.updateAvailableItem.useMutation({
     onSuccess: async () => {
       toastCustom({
         type: "success",
@@ -94,7 +94,7 @@ const ItemEdit = (
 
   const item: MenuItem = data!;
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<UpdateItemInput>({
+  const { register, handleSubmit, formState: { errors } } = useForm<UpdateItemInput>({
     mode: "onChange",
     resolver: zodResolver(updateItemSchema),
   });
@@ -186,8 +186,8 @@ const ItemEdit = (
                           <Button
                             color="secondary"
                             type="submit"
-                            isDisabled={isSubmitting}
-                            isLoading={isSubmitting}
+                            isDisabled={isLoading}
+                            isLoading={isLoading}
                           >
                             Submit
                           </Button>

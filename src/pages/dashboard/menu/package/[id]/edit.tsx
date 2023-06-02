@@ -80,7 +80,7 @@ const PackageItemEdit = (
     []
   ) as IItemsOnPackage[] ?? [];
 
-  const { mutate } = api.packageItem.updatePackage.useMutation({
+  const { mutate, isLoading } = api.packageItem.updatePackage.useMutation({
     onSuccess: async () => {
       toastCustom({
         type: "success",
@@ -96,7 +96,7 @@ const PackageItemEdit = (
     }
   });
 
-  const { mutate: mutateRestore } = api.packageItem.restorePackage.useMutation({
+  const { mutate: mutateRestore, isLoading: loadingRestore } = api.packageItem.restorePackage.useMutation({
     onSuccess: async () => {
       toastCustom({
         type: "success",
@@ -122,7 +122,7 @@ const PackageItemEdit = (
 
   const packageItem: Package = data!;
 
-  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<UpdatePackageInput>({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<UpdatePackageInput>({
     mode: "onChange",
     resolver: zodResolver(updatePackageSchema),
   });
@@ -259,8 +259,8 @@ const PackageItemEdit = (
                           <Button
                             color="secondary"
                             type="submit"
-                            isDisabled={isSubmitting}
-                            isLoading={isSubmitting}
+                            isDisabled={isLoading}
+                            isLoading={isLoading}
                           >
                             Submit
                           </Button>
@@ -288,6 +288,8 @@ const PackageItemEdit = (
                         color="success"
                         fullWidth
                         onPress={onRestore}
+                        isDisabled={loadingRestore}
+                        isLoading={loadingRestore}
                       >
                         Recovery
                       </Button>

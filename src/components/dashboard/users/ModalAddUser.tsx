@@ -20,7 +20,7 @@ export default function ModalAddUser({ onSuccess }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
-  const { mutate } = api.user.createUser.useMutation({
+  const { mutate, isLoading } = api.user.createUser.useMutation({
     onSuccess: async() => {
       await onSuccess();
       onOpenChange();
@@ -37,7 +37,7 @@ export default function ModalAddUser({ onSuccess }: Props) {
     }
   });
 
-  const { control, register, handleSubmit, formState: { errors, isSubmitting, defaultValues } } = useForm<CreateUserInput>({
+  const { control, register, handleSubmit, formState: { errors, defaultValues } } = useForm<CreateUserInput>({
     mode: "onChange",
     defaultValues: {
       isActive: true,
@@ -183,10 +183,10 @@ export default function ModalAddUser({ onSuccess }: Props) {
                   )}
                 </ModalBody>
                 <ModalFooter>
-                  <Button type="button" variant="flat" color="danger" onPress={onClose} disabled={isSubmitting}>
+                  <Button type="button" variant="flat" color="danger" onPress={onClose} disabled={isLoading}>
                     Close
                   </Button>
-                  <Button color="secondary" type="submit" isDisabled={isSubmitting} isLoading={isSubmitting}>
+                  <Button color="secondary" type="submit" isDisabled={isLoading} isLoading={isLoading}>
                     Submit
                   </Button>
                 </ModalFooter>
