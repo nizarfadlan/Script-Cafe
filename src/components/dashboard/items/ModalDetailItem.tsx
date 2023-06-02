@@ -11,7 +11,6 @@ interface Props extends DefaultPropsModal {
 export default function ModalDetailItem({ isOpen, onOpenChange, item }: Props) {
   return (
     <Modal
-      aria-labelledby="modal-title"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
     >

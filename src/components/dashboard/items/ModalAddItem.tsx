@@ -49,12 +49,11 @@ export default function ModalAddItem({ onSuccess }: Props) {
         startIcon={<PlusIcon fill="currentColor" size={18} />}
         variant="shadow"
         color="secondary"
-        onPress={onOpen}
+        onPress={() => onOpen}
       >
         <p className="sr-only sm:not-sr-only">Add Item</p>
       </Button>
       <Modal
-        aria-labelledby="modal-title"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
