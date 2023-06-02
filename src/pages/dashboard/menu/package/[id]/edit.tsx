@@ -60,7 +60,7 @@ const PackageItemEdit = (
 ) => {
   const router = useRouter();
   const { id } = props;
-  const { data, refetch } = api.packageItem.getOne.useQuery({ id }, {
+  const { data, refetch, isLoading: loadingGetData } = api.packageItem.getOne.useQuery({ id }, {
     async onSuccess(data) {
       await editItemsOnPackageTable.clear();
 
@@ -112,7 +112,7 @@ const PackageItemEdit = (
     }
   });
 
-  if (!data) {
+  if (!data || loadingGetData) {
     <LayoutDashboard title="Edit item">
       <div className="flex justify-center">
         <Spinner color="secondary" />

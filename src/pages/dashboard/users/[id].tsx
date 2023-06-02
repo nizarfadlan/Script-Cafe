@@ -74,7 +74,7 @@ const UserEdit = (
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
 
-  const { data, refetch } = api.user.getOne.useQuery({ id });
+  const { data, refetch, isLoading: loadingGetData } = api.user.getOne.useQuery({ id });
   const { mutate: mutateActiveUser } = api.user.updateActiveUser.useMutation({
     onSuccess: async() => {
       toastCustom({
@@ -129,7 +129,7 @@ const UserEdit = (
     }
   });
 
-  if (!data) {
+  if (!data || loadingGetData) {
     <LayoutDashboard title="Edit user">
       <div className="flex justify-center">
         <Spinner color="secondary" />

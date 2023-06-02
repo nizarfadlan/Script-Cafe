@@ -51,7 +51,7 @@ const ItemEdit = (
 ) => {
   const router = useRouter();
   const { id } = props;
-  const { data, refetch } = api.item.getOne.useQuery({ id });
+  const { data, refetch, isLoading: loadingGetData } = api.item.getOne.useQuery({ id });
   const { mutate } = api.item.updateItem.useMutation({
     onSuccess: async () => {
       toastCustom({
@@ -84,7 +84,7 @@ const ItemEdit = (
     }
   });
 
-  if (!data) {
+  if (!data || loadingGetData) {
     <LayoutDashboard title="Edit item">
       <div className="flex justify-center">
         <Spinner color="secondary" />
