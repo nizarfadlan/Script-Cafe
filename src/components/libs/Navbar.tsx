@@ -58,20 +58,21 @@ export default function NavbarComponent({
           </NavbarItem>
           {status === "authenticated" && session ? (
             <Dropdown placement="bottom-end" backdropVariant="blur">
-              <NavbarItem>
-                <DropdownTrigger>
+              <DropdownTrigger>
+                <NavbarItem>
                   <Avatar
                     isBordered
                     as="button"
                     color="secondary"
-                    size="md"
+                    size="sm"
+                    className="transition-transform"
                     classNames={{
                       base: "w-10 h-10 text-base"
                     }}
                     src="/avatar.png"
                   />
-                </DropdownTrigger>
-              </NavbarItem>
+                </NavbarItem>
+              </DropdownTrigger>
               <DropdownMenu
                 aria-label="User menu actions"
                 color="secondary"
