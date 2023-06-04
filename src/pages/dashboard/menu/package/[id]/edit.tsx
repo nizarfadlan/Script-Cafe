@@ -275,7 +275,7 @@ const PackageItemEdit = (
                     className="p-3 border-none h-max"
                   >
                     <CardHeader className="text-lg">
-                      <h1>validationState</h1>
+                      <h1>Status Package</h1>
                     </CardHeader>
                     <CardBody className="flex flex-col items-center justify-center text-rose-400 fill-rose-400">
                       <FailedIcon fill="inherit" size={80} />

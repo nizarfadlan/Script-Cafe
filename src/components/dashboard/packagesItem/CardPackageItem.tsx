@@ -46,28 +46,30 @@ export const CardItem: React.FC<{
         >
           <CardHeader className="absolute z-10 flex-col items-start top-1">
             <p className="text-xs font-bold uppercase text-white/60">Item {index + 1}</p>
-            <h4 className="text-2xl font-medium text-black">{dataItem?.name}</h4>
+            <h4 className="text-2xl font-medium text-foreground">{dataItem?.name}</h4>
           </CardHeader>
           <img
             alt="Card item"
             className="object-cover w-full h-full scale-125 -translate-y-10"
             src="/item.jpeg"
           />
-          <CardFooter className="absolute bottom-0 z-10 justify-between border-t bg-white/30 border-slate-300">
-            <div>
-              <p className="text-xs text-black">{dataItem?.available ? "Available" : "Unavailable"}.</p>
-              <p className="text-xs text-black">Total number of items {item.quantity}.</p>
+          <CardFooter className="z-10 bg-background/40 w-[calc(100%_-_16px)] shadow-lg ml-2 rounded-xl bottom-2 absolute before:rounded-xl overflow-hidden justify-between py-4">
+            <div className="w-full text-xs text-foreground/60">
+              <p className="font-bold">{dataItem?.available ? "Available" : "Unavailable"}.</p>
+              <p>Total number of items <span className="font-bold">{item.quantity}</span>.</p>
             </div>
             {type === "action" && (
-              <Button
-                color="danger"
-                radius="full"
-                size="sm"
-                variant="flat"
-                onPress={() => deleteItem(item.id)}
-              >
-                Remove item
-              </Button>
+              <div className="flex justify-end w-full">
+                <Button
+                  color="danger"
+                  radius="full"
+                  size="sm"
+                  variant="flat"
+                  onPress={() => deleteItem(item.id)}
+                >
+                  Remove item
+                </Button>
+              </div>
             )}
           </CardFooter>
         </Card>

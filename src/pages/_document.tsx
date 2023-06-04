@@ -54,7 +54,7 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" href="/logo/apple-touch-icon.png" />
           <meta name="apple-mobile-web-app-status-bar" content="#B972E4" />
         </Head>
-        <body className="min-h-screen antialiased bg-background">
+        <body className="min-h-screen antialiased">
           <Main />
           <NextScript />
         </body>
