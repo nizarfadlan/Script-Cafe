@@ -17,7 +17,7 @@ datasource db {
     url      = env("DATABASE_URL")
 
     // If not using a bouncer, comment directUrl
-    // directUrl = env("DIRECT_DATABASE_URL")
+    directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model User {
