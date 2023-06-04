@@ -58,6 +58,7 @@ export default function ModalAddUser({ onSuccess }: Props) {
         color="secondary"
         aria-label="modal-add-user"
         onPress={onOpen}
+        className="min-w-max"
       >
         <p className="sr-only sm:not-sr-only">Add User</p>
       </Button>

@@ -51,6 +51,7 @@ export default function ModalAddItem({ onSuccess }: Props) {
         color="secondary"
         onPress={onOpen}
         aria-label="modal-add-item"
+        className="min-w-max"
       >
         <p className="sr-only sm:not-sr-only">Add Item</p>
       </Button>

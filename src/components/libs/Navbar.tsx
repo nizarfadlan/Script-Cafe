@@ -1,11 +1,10 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarMenu, NavbarMenuToggle, useDisclosure } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarMenu, NavbarMenuToggle, useDisclosure, Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from "@nextui-org/react";
 import DarkMode from "./DarkMode";
 import { type Menu } from "@/types/menu.type";
 import { MenuCollapseNavbar, MenuNavbar } from "./MenuNavbar";
 import Config from "@/config/appConfig";
 import { useState } from "react";
 import ModalLogin from "../ModalLogin";
-import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -55,9 +54,11 @@ export default function NavbarComponent({
         <NavbarContent
           justify="end"
         >
-          <DarkMode />
-          {status === "authenticated" && session ?
-            <Dropdown placement="bottom-end" backdropVariant="blur" closeOnSelect>
+          <NavbarItem>
+            <DarkMode />
+          </NavbarItem>
+          {status === "authenticated" && session ? (
+            <Dropdown placement="bottom-end" backdropVariant="blur">
               <NavbarItem>
                 <DropdownTrigger>
                   <Avatar
@@ -91,19 +92,19 @@ export default function NavbarComponent({
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          :
+          ) : (
             <NavbarItem>
-              <Button color="secondary" onPress={onOpen} aria-label="modal-login">
-                Sign In
-              </Button>
-            </NavbarItem>
-          }
+            <Button color="secondary" onPress={onOpen} aria-label="modal-login" className="min-w-max">
+              Sign In
+            </Button>
+            <ModalLogin isOpen={isOpen} onOpenChange={onOpenChange} />
+          </NavbarItem>
+          )}
         </NavbarContent>
         <NavbarMenu>
           <MenuCollapseNavbar items={items} />
         </NavbarMenu>
       </Navbar>
-      <ModalLogin isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   )
 }

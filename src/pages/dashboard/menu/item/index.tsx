@@ -154,7 +154,7 @@ const Item: NextPage = () => {
                 variant="bordered"
                 color="secondary"
                 startIcon={<FilterIcon size={18} />}
-                className="w-max sm:w-[120px] hover:bg-secondary hover:text-secondary-foreground hove:shadow-lg hover:shadow-secondary/40"
+                className="min-w-max sm:w-[120px] hover:bg-secondary hover:text-secondary-foreground hove:shadow-lg hover:shadow-secondary/40"
               >
                 <p className="sr-only sm:not-sr-only">Filter</p>
               </Button>

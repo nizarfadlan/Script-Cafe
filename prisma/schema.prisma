@@ -15,6 +15,8 @@ generator zod {
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
+
+    // If not using a bouncer, comment directUrl
     directUrl = env("DIRECT_DATABASE_URL")
 }
 
