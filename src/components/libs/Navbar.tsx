@@ -13,7 +13,6 @@ export default function NavbarComponent({
 }: {
   items: Menu[],
 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean | undefined>(false);
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -34,18 +33,18 @@ export default function NavbarComponent({
     <>
 
       <Navbar
-        position="floating"
-        onMenuOpenChange={setIsMenuOpen}
+        position="sticky"
         maxWidth="xl"
         isBlurred
       >
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
-        <NavbarBrand>
-          <p className="hidden my-auto font-bold sm:block text-inherit">{Config.APP_NAME}</p>
-        </NavbarBrand>
+        <NavbarContent justify="start">
+          <NavbarMenuToggle
+            className="sm:hidden"
+          />
+          <NavbarBrand>
+            <p className="hidden my-auto font-bold sm:block text-inherit">{Config.APP_NAME}</p>
+          </NavbarBrand>
+        </NavbarContent>
         <NavbarContent
           className="hidden gap-0 sm:flex"
         >
@@ -94,17 +93,19 @@ export default function NavbarComponent({
             </Dropdown>
           ) : (
             <NavbarItem>
-            <Button color="secondary" onPress={onOpen} aria-label="modal-login" className="min-w-max">
-              Sign In
-            </Button>
-            <ModalLogin isOpen={isOpen} onOpenChange={onOpenChange} />
-          </NavbarItem>
+              <Button color="secondary" onPress={onOpen} aria-label="modal-login" className="min-w-max">
+                Sign In
+              </Button>
+            </NavbarItem>
           )}
         </NavbarContent>
         <NavbarMenu>
-          <MenuCollapseNavbar items={items} />
+          <div className="flex flex-col gap-2 mx-4 mt-2">
+            <MenuCollapseNavbar items={items} />
+          </div>
         </NavbarMenu>
       </Navbar>
+      <ModalLogin isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   )
 }

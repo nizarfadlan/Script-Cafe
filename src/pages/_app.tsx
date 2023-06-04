@@ -2,7 +2,7 @@ import { type AppType, type AppProps } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Poppins } from "next/font/google";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -12,6 +12,7 @@ import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -41,15 +42,22 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }: AppProps<{ session: Session | null }>) => {
   return (
     <SessionProvider session={session}>
-      <ThemeProvider
-        defaultTheme="system"
-        attribute="class"
-      >
-        <NextUIProvider>
+      <NextUIProvider>
+        <NextThemesProvider
+          defaultTheme="system"
+          attribute="class"
+        >
           <Toaster />
+          <Head>
+            <meta
+              key="viewport"
+              content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+              name="viewport"
+            />
+          </Head>
           <Component className={poppins.className} {...pageProps} />
-        </NextUIProvider>
-      </ThemeProvider>
+        </NextThemesProvider>
+      </NextUIProvider>
     </SessionProvider>
   );
 };

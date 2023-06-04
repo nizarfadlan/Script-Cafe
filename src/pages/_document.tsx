@@ -15,10 +15,6 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-          />
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="robots" content="index, follow" />
           <meta name="description" content="Script Cafe is a cafe that provides decent facilities that are useful for programmers" />
@@ -58,7 +54,7 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" href="/logo/apple-touch-icon.png" />
           <meta name="apple-mobile-web-app-status-bar" content="#B972E4" />
         </Head>
-        <body>
+        <body className="min-h-screen antialiased bg-background">
           <Main />
           <NextScript />
         </body>

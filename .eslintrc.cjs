@@ -39,6 +39,7 @@ const config = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@next/next/no-img-element": "off",
   },
+  ignorePatterns: ["tailwind.config.js"],
 };
 
 module.exports = config;
