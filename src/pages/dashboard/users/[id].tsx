@@ -217,7 +217,7 @@ const UserEdit = (
                                 required: true,
                               })}
                               defaultValue={user.name?.toString()}
-                              autoFocus
+                              
                               label="Name"
                               placeholder="Enter your name"
                               variant="bordered"
