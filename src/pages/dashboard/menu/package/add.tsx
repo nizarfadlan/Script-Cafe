@@ -111,7 +111,7 @@ const AddPackageItem: NextPage = () => {
                 {...register("name", {
                   required: true,
                 })}
-                autoFocus
+                
                 label="Name"
                 placeholder="Enter name package item"
                 variant="bordered"
