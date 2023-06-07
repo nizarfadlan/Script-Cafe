@@ -22,6 +22,7 @@ const Menu = [
 export default function Layout({
   title,
   children,
+  menu = Menu,
 }: LayoutProps) {
   const onTitle = `${title} - ${Config.APP_NAME}`;
 
@@ -31,7 +32,7 @@ export default function Layout({
         <title>{onTitle}</title>
       </Head>
       <main className="min-h-screen">
-        <NavbarComponent items={Menu} />
+        <NavbarComponent items={menu} />
         <div className="container px-6 py-12 mx-auto md:px-4 lg:py-18 xl:px-14">{children}</div>
         <ImageBackground />
       </main>

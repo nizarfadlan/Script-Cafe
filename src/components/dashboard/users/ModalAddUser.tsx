@@ -84,7 +84,6 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     variant="bordered"
                     type="text"
                     validationState={errors.name ? "invalid" : "valid"}
-                    id="name"
                     isRequired
                     errorMessage={errors.name && errors.name?.message}
                   />
@@ -97,7 +96,6 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     variant="bordered"
                     type="email"
                     validationState={errors.email ? "invalid" : "valid"}
-                    id="email"
                     isRequired
                     errorMessage={errors.email && errors.email?.message}
                   />
@@ -111,7 +109,6 @@ export default function ModalAddUser({ onSuccess }: Props) {
                         {...register("role")}
                         defaultValue={defaultValues?.role}
                         className="mt-2 w-full h-full !bg-transparent outline-none placeholder:text-neutral-500 text-sm"
-                        id="role"
                       >
                         <option value="" className="dark:text-background">Choose Your Role</option>
                         {Object.keys(Role).map((role) => (
@@ -141,7 +138,6 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     type={isPasswordVisible ? "text" : "password"}
                     variant="bordered"
                     validationState={errors.password ? "invalid" : "valid"}
-                    id="password"
                     isRequired
                     errorMessage={errors.password && errors.password?.message}
                   />
@@ -163,7 +159,6 @@ export default function ModalAddUser({ onSuccess }: Props) {
                     type={isPasswordVisible ? "text" : "password"}
                     variant="bordered"
                     validationState={errors.passwordConfirm ? "invalid" : "valid"}
-                    id="Enter your password again"
                     isRequired
                     errorMessage={errors.passwordConfirm && errors.passwordConfirm?.message}
                   />

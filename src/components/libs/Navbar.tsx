@@ -3,7 +3,6 @@ import DarkMode from "./DarkMode";
 import { type Menu } from "@/types/menu.type";
 import { MenuCollapseNavbar, MenuNavbar } from "./MenuNavbar";
 import Config from "@/config/appConfig";
-import { useState } from "react";
 import ModalLogin from "../ModalLogin";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -13,7 +12,7 @@ export default function NavbarComponent({
 }: {
   items: Menu[],
 }) {
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -57,22 +56,24 @@ export default function NavbarComponent({
             <DarkMode />
           </NavbarItem>
           {status === "authenticated" && session ? (
-            <Dropdown placement="bottom-end" backdropVariant="blur">
-              <DropdownTrigger>
-                <NavbarItem>
+            <Dropdown
+              placement="bottom-end"
+              backdropVariant="blur"
+              triggerScaleOnOpen
+            >
+              <NavbarItem aria-label="avatarButton">
+                <DropdownTrigger>
                   <Avatar
+                    aria-labelledby="avatarButton"
                     isBordered
                     as="button"
                     color="secondary"
                     size="sm"
-                    className="transition-transform"
-                    classNames={{
-                      base: "w-10 h-10 text-base"
-                    }}
+                    className="w-10 h-10 text-base transition-transform"
                     src="/avatar.png"
                   />
-                </NavbarItem>
-              </DropdownTrigger>
+                </DropdownTrigger>
+              </NavbarItem>
               <DropdownMenu
                 aria-label="User menu actions"
                 color="secondary"
@@ -80,14 +81,14 @@ export default function NavbarComponent({
                   await actionAvatar(key)
                 }}
               >
-                <DropdownItem key="profile" className="gap-2 h-14">
+                <DropdownItem key="profile" textValue="Profile" className="gap-2 h-14">
                   <p className="font-semibold">Signed in as</p>
                   <p className="font-semibold">{session.user.email}</p>
                 </DropdownItem>
-                <DropdownItem key="dashboard" showDivider>
+                <DropdownItem key="dashboard" textValue="Dashboard" showDivider>
                   Dashboard
                 </DropdownItem>
-                <DropdownItem key="signout" showDivider color="danger">
+                <DropdownItem key="signout" textValue="SignOut" showDivider color="danger">
                   Sign Out
                 </DropdownItem>
               </DropdownMenu>
@@ -106,7 +107,7 @@ export default function NavbarComponent({
           </div>
         </NavbarMenu>
       </Navbar>
-      <ModalLogin isOpen={isOpen} onOpenChange={onOpenChange} />
+      <ModalLogin isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose} />
     </>
   )
 }

@@ -1,11 +1,8 @@
 import { getSession, useSession } from "next-auth/react";
-import Head from "next/head";
 import Layout from "../Layout";
 import Unauthorize from "../libs/Unauthorize";
 import { Menu } from "../../types/menu.type";
-import NavbarComponent from "../libs/Navbar";
 import { BookingIcon, FoodIcon, OrderIcon, PackageIcon, PaymentIcon } from "../libs/Icons";
-import ImageBackground from "../libs/ImageBackground";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import type { Session } from "next-auth";
 import { Spinner } from "@nextui-org/react";
@@ -106,14 +103,9 @@ export default function LayoutDashboard({
 
   return (
     <>
-      <Head>
-        <title>{onTitle}</title>
-      </Head>
-      <main className="min-h-screen">
-        <NavbarComponent items={Menu} />
-        <div className="container px-6 py-12 mx-auto md:px-4 lg:py-18 xl:px-14">{children}</div>
-        <ImageBackground />
-      </main>
+      <Layout title={onTitle} menu={Menu}>
+        {children}
+      </Layout>
     </>
   );
 }
