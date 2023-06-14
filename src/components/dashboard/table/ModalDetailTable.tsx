@@ -46,7 +46,7 @@ const DetailTable = ({
       {
         method: "POST",
         body: JSON.stringify({
-          data: `${process.env.BASE_URL || process.env.NEXTAUTH_URL || "https://localhost:3000"}/order/${id}`
+          data: `${process.env.VERCEL_URL || process.env.NEXTAUTH_URL || "https://localhost:3000"}/order/${id}`
         }),
         headers: {
           "Content-Type": "application/json",
