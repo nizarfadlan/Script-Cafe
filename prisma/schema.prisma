@@ -17,7 +17,7 @@ datasource db {
     url      = env("DATABASE_URL")
 
     // If not using a bouncer, comment directUrl
-    directUrl = env("DIRECT_DATABASE_URL")
+    // directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model User {
@@ -75,6 +75,7 @@ model PackageItem {
 model Transaction {
     id        String   @id @default(cuid())
     total     Int
+    // Add total discount/potongan
     paid      Boolean @default(false)
     finished   Boolean @default(false)
     createdAt DateTime @default(now())
@@ -93,6 +94,7 @@ model Transaction {
 model TransactionOnItem {
     itemId   String
     items MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+    quantity Int
     transactionId   String
     transactions Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
     assignedAt DateTime @default(now())
@@ -103,6 +105,7 @@ model TransactionOnItem {
 model TransactionOnPackage {
     packageId   String
     packages Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+    quantity Int
     transactionId   String
     transactions Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
     assignedAt DateTime @default(now())
@@ -122,6 +125,8 @@ model Table {
 model PaymentType {
     id        String   @id @default(cuid())
     name   String
+    accountNumber   BigInt
+    active      Boolean @default(true)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     transaction Transaction[]
@@ -144,6 +149,13 @@ model Booking {
 
 // Utils
 enum Role {
+    Owner
+    Manajer
+    Kasir
+    Kitchen
+}
+
+enum Payment {
     Owner
     Manajer
     Kasir

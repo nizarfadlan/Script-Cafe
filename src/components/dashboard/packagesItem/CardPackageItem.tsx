@@ -18,24 +18,26 @@ export const CardItem: React.FC<{
 }) => {
   const { data } = api.item.getOne.useQuery({ id: item.id });
 
-  if (!data) {
-    <div className="col-span-1">
-      <Card
-        isFooterBlurred
-        className="w-full h-[320px]"
-      >
-        <CardBody className="flex items-center justify-center">
-          <h4 className="text-lg font-bold">Error</h4>
-        </CardBody>
-      </Card>
-    </div>
-  }
-
-  const dataItem: MenuItem = data!;
-
   const deleteItem = useCallback(async(id: string) => {
     await db?.delete(id);
   }, [db]);
+
+  if (!data) {
+    return (
+      <div className="col-span-1">
+        <Card
+          isFooterBlurred
+          className="w-full h-[320px]"
+        >
+          <CardBody className="flex items-center justify-center">
+            <h4 className="text-lg font-bold">Error</h4>
+          </CardBody>
+        </Card>
+      </div>
+    )
+  }
+
+  const dataItem: MenuItem = data;
 
   return (
     <Fragment>
@@ -59,7 +61,7 @@ export const CardItem: React.FC<{
               <p>Total number of items <span className="font-bold">{item.quantity}</span>.</p>
             </div>
             {type === "action" && (
-              <div className="flex justify-end w-full">
+              <div className="flex justify-end w-full text-xs">
                 <Button
                   color="danger"
                   radius="full"
@@ -67,7 +69,7 @@ export const CardItem: React.FC<{
                   variant="flat"
                   onPress={() => deleteItem(item.id)}
                 >
-                  Remove item
+                  Remove
                 </Button>
               </div>
             )}

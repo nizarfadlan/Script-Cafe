@@ -4,7 +4,7 @@ import { signIn, type SignInResponse } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { MailFilledIcon, LockFilledIcon } from "@nextui-org/shared-icons";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "./libs/Icons";
 import type { InputsLogin } from "@/types/auth.type";
 import type { DefaultPropsModal } from "@/types/modal.type";
@@ -12,7 +12,9 @@ import type { DefaultPropsModal } from "@/types/modal.type";
 export default function ModalLogin({ isOpen, onOpenChange, onClose }: DefaultPropsModal) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
+  const togglePasswordVisibility = useCallback(() => {
+    setIsPasswordVisible(!isPasswordVisible);
+  }, [isPasswordVisible]);
 
   const router = useRouter();
   const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<InputsLogin>({
@@ -65,7 +67,7 @@ export default function ModalLogin({ isOpen, onOpenChange, onClose }: DefaultPro
               variant="bordered"
               type="email"
               validationState={errors.email ? "invalid" : "valid"}
-              errorMessage={errors.email && errors.email?.message}
+              errorMessage={errors.email && errors.email.message}
               isRequired
             />
             <Input
@@ -87,11 +89,11 @@ export default function ModalLogin({ isOpen, onOpenChange, onClose }: DefaultPro
               type={isPasswordVisible ? "text" : "password"}
               variant="bordered"
               validationState={errors.password ? "invalid" : "valid"}
-              errorMessage={errors.password && errors.password?.message}
+              errorMessage={errors.password && errors.password.message}
               isRequired
             />
             {errors.root && (
-              <p className="my-2 text-xs text-red-500">{errors.root?.message}</p>
+              <p className="my-2 text-xs text-red-500">{errors.root.message}</p>
             )}
             <div className="flex justify-between px-1 py-2">
               <Checkbox

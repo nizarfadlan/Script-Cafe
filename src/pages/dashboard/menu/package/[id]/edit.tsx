@@ -3,12 +3,12 @@ import { createServerSideHelpers } from "@trpc/react-query/server";
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import superjson from "superjson";
 import { prisma } from "@/server/db";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import LayoutDashboard from "@/components/dashboard/Layout";
 import { api } from "@/utils/api";
 import { toastCustom } from "@/components/libs/Toast";
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Spinner, useDisclosure } from "@nextui-org/react";
-import type { Package } from "@prisma/client";
+import { Role, type Package } from "@prisma/client";
 import { type UpdatePackageInput, updatePackageSchema } from "@/server/menu/packageItem/packageItem.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -51,6 +51,7 @@ export const getServerSideProps = async (
     props: {
       trpcState: helpers.dehydrate(),
       id,
+      session,
     },
   };
 }
@@ -60,6 +61,8 @@ const PackageItemEdit = (
 ) => {
   const router = useRouter();
   const { id } = props;
+  const { data: session } = useSession();
+
   const { data, refetch, isLoading: loadingGetData } = api.packageItem.getOne.useQuery({ id }, {
     async onSuccess(data) {
       await editItemsOnPackageTable.clear();
@@ -75,9 +78,19 @@ const PackageItemEdit = (
     },
   });
 
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<UpdatePackageInput>({
+    mode: "onChange",
+    resolver: zodResolver(updatePackageSchema),
+  });
+
   const items: IItemsOnPackage[] = useLiveQuery(
-    () => editItemsOnPackageTable.toArray(),
-    []
+    async() => {
+      const getData: IItemsOnPackage[] = await editItemsOnPackageTable.toArray() as IItemsOnPackage[];
+
+      setValue("body.items", getData);
+
+      return getData;
+    }, []
   ) as IItemsOnPackage[] ?? [];
 
   const { mutate, isLoading } = api.packageItem.updatePackage.useMutation({
@@ -122,13 +135,15 @@ const PackageItemEdit = (
 
   const packageItem: Package = data!;
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<UpdatePackageInput>({
-    mode: "onChange",
-    resolver: zodResolver(updatePackageSchema),
-  });
-
   const onSubmit: SubmitHandler<UpdatePackageInput> = (dataInput): void => {
-    mutate(dataInput);
+    if (session?.user.role === Role.Manajer || session?.user.role === Role.Owner) {
+      mutate(dataInput);
+    } else {
+      toastCustom({
+        type: "error",
+        description: "You don't have permission to edit this item"
+      });
+    }
   }
 
   const onRestore = (): void => {
@@ -167,8 +182,6 @@ const PackageItemEdit = (
     }
   }, []);
 
-  if (items.length > 0) setValue("body.items", items);
-
   return (
     <>
       <LayoutDashboard title="Edit Package Item">
@@ -178,7 +191,7 @@ const PackageItemEdit = (
             color="danger"
             className="mb-2 w-max hover:bg-danger hover:text-danger-foreground hover:shadow-lg hover:shadow-danger/40"
             startIcon={<ArrowLeftIcon size={18} />}
-            onPress={() => router.replace("/dashboard/menu/package")}
+            onPress={() => router.push("/dashboard/menu/package")}
           >
             Back
           </Button>

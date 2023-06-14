@@ -3,6 +3,8 @@ import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import { createPackageController, deletePackageController, getAll, getOne, restorePackageController, updatePackageController } from "@/server/menu/packageItem/packageItem.controller";
 import { paginationQuery } from "@/server/pagination/pagination.schema";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import { Package } from "@prisma/client";
 
 export const packageRouter = createTRPCRouter({
   createPackage: protectedProcedure
@@ -26,6 +28,24 @@ export const packageRouter = createTRPCRouter({
       }
 
       return getOne(input);
+    }),
+  getAllWithId: protectedProcedure
+    .input(z.array(paramsId))
+    .query(async({ input }) => {
+      const data: Package[] = [];
+      for (const packageItem of input) {
+        if (!packageItem.id) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Item id is required",
+          });
+        }
+
+        const packageData = await getOne(packageItem);
+        data.push(packageData);
+      }
+
+      return data;
     }),
   updatePackage: protectedProcedure
     .input(updatePackageSchema)

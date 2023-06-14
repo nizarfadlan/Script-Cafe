@@ -17,8 +17,8 @@ export default function Toggle({
         className="inline-flex flex-row-reverse w-full max-w-md items-center justify-between cursor-pointer rounded-lg gap-0 p-4 border-2 border-default-200 data-[hover=true]:border-default-400 focus-within:!border-foreground"
         size="sm"
         color="secondary"
-        isSelected={value}
         onValueChange={onChange}
+        defaultSelected={value}
       >
         <div className="flex flex-col gap">
           <p className="text-base">{title}</p>

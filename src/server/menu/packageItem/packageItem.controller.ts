@@ -51,7 +51,7 @@ export async function getAll({
   try {
     const { limit, cursor, skip, search, status } = paginationQuery;
     const packageItems = await prisma.package.findMany({
-      take: limit,
+      take: limit + 1,
       skip,
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: {

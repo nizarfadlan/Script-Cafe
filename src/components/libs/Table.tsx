@@ -2,11 +2,15 @@ import { Chip, type ChipProps, Table, TableBody, TableCell, TableColumn, TableHe
 import React, { useState } from "react";
 import {EditIcon, DeleteIcon, EyeIcon} from "@nextui-org/shared-icons";
 import { DeletePopUp } from "./DeletePopup";
+import moment from "moment";
+import { CheckIcon, RestaurantIcon, UtensilsIcon } from "./Icons";
+import type { StatusData } from "@/server/pagination/pagination.schema";
 
 export interface TableActions {
   edit: (id: string) => Promise<void> | void;
-  delete: (id: string) => void;
-  detail: (id: string) => Promise<void> | void;
+  delete?: (id: string) => void;
+  detail?: (id: string) => Promise<void> | void;
+  accept?: (id: string, status: StatusData) => Promise<void> | void;
 }
 
 export interface TableData {
@@ -14,9 +18,10 @@ export interface TableData {
   title?: string | React.ReactNode;
   titleWithAvatar?: string;
   description?: string | React.ReactNode;
-  category: string | React.ReactNode;
+  category?: string | React.ReactNode;
   descriptionCategory?: string | React.ReactNode;
-  status: string;
+  createdAt?: string;
+  status?: string;
 }
 
 export interface TableColumn {
@@ -53,6 +58,11 @@ export default function TableDynamic({
       unavailable: "danger",
       delete: "danger",
       block: "warning",
+
+      // Only order
+      unpaid: "danger",
+      paid: "success",
+      pending: "warning",
     }
   }, []);
 
@@ -66,7 +76,14 @@ export default function TableDynamic({
 
     switch (columnKey) {
       case "title":
-        return row.title;
+        return (
+          <div className="flex flex-col">
+            <div className="text-sm capitalize text-bold">{row.title}</div>
+            {row.description &&
+              <div className="text-xs text-neutral-400 dark:text-neutral-600">{row.description}</div>
+            }
+          </div>
+        );
       case "titleWithAvatar":
         return (
           <User
@@ -92,34 +109,102 @@ export default function TableDynamic({
         );
       case "status":
         return (
-          <Chip className="capitalize" color={statusColorMap[row.status]} size="sm" variant="flat">
-            {row.status}
-          </Chip>
+          <>
+            {row.status === "pending" ? (
+              <Chip className="capitalize" color={statusColorMap[row.status || ""]} size="sm" variant="flat">
+                Paid And Processing
+              </Chip>
+            ) : row.status === "paid" ? (
+              <Chip className="capitalize" color={statusColorMap[row.status || ""]} size="sm" variant="flat">
+                Paid And Finished
+              </Chip>
+            ): (
+              <Chip className="capitalize" color={statusColorMap[row.status || ""]} size="sm" variant="flat">
+                {row.status}
+              </Chip>
+            )}
+          </>
         );
+      case "createdAt":
+        return (
+          <div className="text-sm capitalize text-bold">{moment(row.createdAt).format("dddd, DD MMMM YYYY | h:mm:ss A")}</div>
+        )
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Detail data" className="text-sm">
-              <Button onPress={() => actions?.detail(row.id)} isIconOnly variant="light">
-                <span className="text-lg cursor-pointer text-neutral-400 active:opacity-50">
-                  <EyeIcon />
-                </span>
-              </Button>
-            </Tooltip>
-            <Tooltip color="warning" className="text-sm" content="Edit data">
-              <Button onPress={() => actions?.edit(row.id)} isIconOnly variant="light">
-                <span className="text-lg cursor-pointer text-warning-400 active:opacity-50">
-                  <EditIcon />
-                </span>
-              </Button>
-            </Tooltip>
-            <Tooltip color="danger" className="text-sm" content="Delete data">
-              <Button onPress={() => modalDelete(row.id)} isIconOnly variant="light">
-                <span className="text-lg cursor-pointer text-danger active:opacity-50">
-                  <DeleteIcon />
-                </span>
-              </Button>
-            </Tooltip>
+            {row.status !== "paid" && actions && actions.accept && (
+              <Tooltip
+                content={
+                  row.status === "pending"
+                  ? "Finished order"
+                  : (
+                      row.status === "paid"
+                      ? "Unfinished order"
+                      : "Accepted payment order"
+                    )
+                }
+                className="text-sm">
+                <Button
+                  onPress={() =>
+                    actions?.accept?.(
+                      row.id,
+                      row.status === "pending"
+                        ? "paid"
+                        : (
+                          row.status === "paid"
+                          ? "finish"
+                          : row.status as StatusData
+                        )
+                    )
+                  }
+                  isIconOnly
+                  variant="light"
+                >
+                  <span
+                    className={`
+                    text-lg cursor-pointer
+                    ${row.status === "paid" ? "text-danger-400" : "text-success-400"}
+                    active:opacity-50
+                    `}
+                  >
+                    {row.status === "pending" ? (
+                      <RestaurantIcon />
+                    ): row.status === "paid" ? (
+                      <UtensilsIcon />
+                    ): (
+                      <CheckIcon />
+                    )}
+                  </span>
+                </Button>
+              </Tooltip>
+            )}
+            {actions && actions.detail && (
+              <Tooltip content="Detail data" className="text-sm">
+                <Button onPress={() => actions?.detail?.(row.id)} isIconOnly variant="light">
+                  <span className="text-lg cursor-pointer text-neutral-400 active:opacity-50">
+                    <EyeIcon />
+                  </span>
+                </Button>
+              </Tooltip>
+            )}
+            {row.status !== "paid" && actions && actions.edit && (
+              <Tooltip color="warning" className="text-sm" content="Edit data">
+                <Button onPress={() => actions?.edit(row.id)} isIconOnly variant="light">
+                  <span className="text-lg cursor-pointer text-warning-400 active:opacity-50">
+                    <EditIcon />
+                  </span>
+                </Button>
+              </Tooltip>
+            )}
+            {actions && actions.delete && (
+              <Tooltip color="danger" className="text-sm" content="Delete data">
+                <Button onPress={() => modalDelete(row.id)} isIconOnly variant="light">
+                  <span className="text-lg cursor-pointer text-danger active:opacity-50">
+                    <DeleteIcon />
+                  </span>
+                </Button>
+              </Tooltip>
+            )}
           </div>
         );
       default:
@@ -186,7 +271,7 @@ export default function TableDynamic({
       <DeletePopUp
         isOpen={openModalDelete}
         onOpenChange={onOpenChangeModalDelete}
-        handler={() => actions?.delete(id)}
+        handler={actions?.delete ? () => actions.delete?.(id) : undefined}
       />
     </>
   );

@@ -3,6 +3,7 @@ import { CompletePackage, relatedPackageModel, CompleteTransaction, relatedTrans
 
 export const transactionOnPackageModel = z.object({
   packageId: z.string(),
+  quantity: z.number().int(),
   transactionId: z.string(),
   assignedAt: z.date(),
 })

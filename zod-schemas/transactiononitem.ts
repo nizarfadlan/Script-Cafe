@@ -3,6 +3,7 @@ import { CompleteMenuItem, relatedMenuItemModel, CompleteTransaction, relatedTra
 
 export const transactionOnItemModel = z.object({
   itemId: z.string(),
+  quantity: z.number().int(),
   transactionId: z.string(),
   assignedAt: z.date(),
 })

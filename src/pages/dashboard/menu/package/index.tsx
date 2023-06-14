@@ -2,10 +2,13 @@ import LayoutDashboard from "@/components/dashboard/Layout";
 import { ChevronDownIcon, FilterIcon, PlusIcon, SearchIcon } from "@/components/libs/Icons";
 import TableDynamic, { type TableData, type TableColumn, type TableActions } from "@/components/libs/Table";
 import { toastCustom, toastCustomLoading } from "@/components/libs/Toast";
+import { formatRupiah } from "@/libs/formatRupiah";
 import type { StatusData } from "@/server/pagination/pagination.schema";
 import { api } from "@/utils/api";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Popover, PopoverContent, PopoverTrigger, Radio, RadioGroup, Spinner } from "@nextui-org/react";
+import { Role } from "@prisma/client";
 import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -18,8 +21,9 @@ const columns: TableColumn[] = [
 
 const PackageItem: NextPage = () => {
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [status, setStatus] = useState<string | undefined>("all" as StatusData);
   const [limit, setLimit] = useState<string | Set<React.Key>>(new Set(["10"]));
@@ -32,10 +36,19 @@ const PackageItem: NextPage = () => {
     [limit],
   );
 
+  const handleChangeStatusView = useCallback((status: string) => {
+    setStatus(status);
+    setPage(0);
+  }, []);
+
+  const handleChangeViewNumber = useCallback((limit: string | Set<React.Key>) => {
+    setLimit(limit);
+    setPage(0);
+  }, []);
+
   const { data, fetchNextPage, isLoading, isError, refetch } = api.packageItem.getAll.useInfiniteQuery(
     {
       limit: parseInt(limitValue),
-      skip: (page - 1) * parseInt(limitValue),
       search,
       status: status as StatusData,
     },
@@ -78,11 +91,18 @@ const PackageItem: NextPage = () => {
   };
 
   const handleDelete = (id: string): void => {
-    mutate({ id });
+    if (session?.user.role === Role.Manajer || session?.user.role === Role.Owner) {
+      mutate({ id });
 
-    if (statusDelete === "loading") {
-      toastCustomLoading({
-        description: "Deleting package item...",
+      if (statusDelete === "loading") {
+        toastCustomLoading({
+          description: "Deleting package item...",
+        });
+      }
+    } else {
+      toastCustom({
+        type: "error",
+        description: "You don't have permission to delete package item",
       });
     }
   };
@@ -92,36 +112,41 @@ const PackageItem: NextPage = () => {
   }
 
   const { pages: pageData = [] } = data || {};
-  const packageItems: TableData[] = pageData[page-1]?.packageItems.map((packageItem) => {
-    let diskon = 0;
-    if (packageItem.discountPercent && packageItem.discountPercent > 0) {
-      diskon = calculateDiscount(packageItem.price, packageItem.discountPercent);
-    }
+  const packageItems: TableData[] = [];
+  pageData.map((page) => {
+    packageItems.push(
+      ...page.packageItems.map((packageItem) => {
+        let diskon = 0;
+        if (packageItem.discountPercent && packageItem.discountPercent > 0) {
+          diskon = calculateDiscount(packageItem.price, packageItem.discountPercent);
+        }
 
-    let status = "available";
-    if (packageItem.deletedAt) {
-      status = "delete";
-    } else {
-      const allAvailable = packageItem.items.every((item) => item.item.available);
-      status = allAvailable ? "available" : "unavailable";
-    }
+        let status = "available";
+        if (packageItem.deletedAt) {
+          status = "delete";
+        } else {
+          const allAvailable = packageItem.items.every((item) => item.item.available);
+          status = allAvailable ? "available" : "unavailable";
+        }
 
-    return {
-      id: packageItem.id,
-      title: packageItem.name || undefined,
-      category: (diskon > 0 ?
-          <div className="flex gap-x-2">
-            <span className="line-through">Rp.{packageItem.price.toString()}</span>
-            <span className="text-danger">Rp.{diskon}</span>
-          </div>
-        :
-          "Rp." + packageItem.price.toString()
-      ),
-      descriptionCategory: (packageItem.discountPercent?.toString() || "0") + " %",
-      status,
-    }
-  }) || [];
-  const cursor = pageData[page-1]?.nextCursor;
+        return {
+          id: packageItem.id,
+          title: packageItem.name || undefined,
+          category: (diskon > 0 ?
+              <div className="flex gap-x-2">
+                <span className="line-through">Rp {formatRupiah(packageItem.price)}</span>
+                <span className="text-danger">Rp {formatRupiah(diskon)}</span>
+              </div>
+            :
+              <span>Rp {formatRupiah(packageItem.price)}</span>
+          ),
+          descriptionCategory: (packageItem.discountPercent?.toString() || "0") + " %",
+          status,
+        }
+      }),
+    );
+  });
+  const cursor = pageData[page]?.nextCursor;
 
   const actions: TableActions = {
     detail: handleDetail,
@@ -149,7 +174,6 @@ const PackageItem: NextPage = () => {
             showArrow
             offset={10}
             placement="bottom-end"
-            variant="shadow"
             className="w-[280px] bg-white dark:bg-content1 py-2"
           >
             <PopoverTrigger>
@@ -157,7 +181,7 @@ const PackageItem: NextPage = () => {
                 variant="bordered"
                 color="secondary"
                 startIcon={<FilterIcon size={18} />}
-                className="min-w-max sm:w-[120px] hover:bg-secondary hover:text-secondary-foreground hove:shadow-lg hover:shadow-secondary/40"
+                className="min-w-max sm:w-[120px] hover:bg-secondary hover:text-secondary-foreground hover:shadow-lg hover:shadow-secondary/40"
               >
                 <p className="sr-only sm:not-sr-only">Filter</p>
               </Button>
@@ -180,13 +204,14 @@ const PackageItem: NextPage = () => {
                         onValueChange={setSearch}
                         startContent={<SearchIcon size={18} />}
                         isClearable
+                        onClear={() => setSearch("")}
                       />
                     </div>
                     <div>
                       <p className="mb-2 text-sm text-foreground">Status</p>
                       <RadioGroup
                         value={status}
-                        onValueChange={setStatus}
+                        onValueChange={handleChangeStatusView}
                         color="secondary"
                       >
                         <Radio value="all">All</Radio>
@@ -212,7 +237,7 @@ const PackageItem: NextPage = () => {
                           color="secondary"
                           selectedKeys={limit}
                           selectionMode="single"
-                          onSelectionChange={setLimit}
+                          onSelectionChange={handleChangeViewNumber}
                         >
                           <DropdownItem key="10">10</DropdownItem>
                           <DropdownItem key="25">25</DropdownItem>

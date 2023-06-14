@@ -4,7 +4,7 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from
 interface Props {
   isOpen: boolean;
   onOpenChange: () => void;
-  handler: () => void;
+  handler?: () => void;
 }
 
 export const DeletePopUp = ({
@@ -37,7 +37,7 @@ export const DeletePopUp = ({
                 variant="shadow"
                 color="danger"
                 onPress={() => {
-                  handler();
+                  handler?.();
                   onOpenChange();
                 }}
                 className="w-full"

@@ -25,6 +25,7 @@ export const updateItemSchema = z.object({
   params: paramsId,
   body: createItem.pick({ name: true, price: true, discountPercent: true }),
 });
+
 export const updateAvailableItemSchema = z.object({
   params: paramsId,
   body: recoverySchema.merge(createItem.pick({ available: true })),

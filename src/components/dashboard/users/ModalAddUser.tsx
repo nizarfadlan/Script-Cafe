@@ -2,7 +2,7 @@ import { Modal, Button, Input, ModalHeader, ModalContent, ModalBody, ModalFooter
 import { useForm, type SubmitHandler, Controller } from "react-hook-form";
 import { Role } from "@prisma/client";
 import Toggle from "@/components/libs/inputs/Toggle";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { EyeSlashFilledIcon, EyeFilledIcon } from "@nextui-org/shared-icons";
 import { api } from "@/utils/api";
 import { toastCustom } from "@/components/libs/Toast";
@@ -19,7 +19,9 @@ export default function ModalAddUser({ onSuccess }: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
+  const togglePasswordVisibility = useCallback(() => {
+    setIsPasswordVisible(!isPasswordVisible);
+  }, [isPasswordVisible]);
   const { mutate, isLoading } = api.user.createUser.useMutation({
     onSuccess: async() => {
       await onSuccess();

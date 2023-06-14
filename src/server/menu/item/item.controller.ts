@@ -63,7 +63,7 @@ export async function getAll({
   try {
     const { limit, cursor, skip, search, status } = paginationQuery;
     const items = await prisma.menuItem.findMany({
-      take: limit,
+      take: limit + 1,
       skip,
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: {

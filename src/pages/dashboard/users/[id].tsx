@@ -7,7 +7,7 @@ import { prisma } from "@/server/db";
 import superjson from "superjson";
 import LayoutDashboard from "@/components/dashboard/Layout";
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Spinner, Tab, Tabs } from "@nextui-org/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { api } from "@/utils/api";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { type UpdateUserInput, updateUserSchema, type UpdatePasswordInput, updatePasswordSchema } from "@/server/user/user.schema";
@@ -72,7 +72,9 @@ const UserEdit = (
   const { data: session } = useSession();
   const { id } = props;
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
+  const togglePasswordVisibility = useCallback(() => {
+    setIsPasswordVisible(!isPasswordVisible);
+  }, [isPasswordVisible]);
 
   const { data, refetch, isLoading: loadingGetData } = api.user.getOne.useQuery({ id });
   const { mutate: mutateActiveUser } = api.user.updateActiveUser.useMutation({
@@ -189,7 +191,7 @@ const UserEdit = (
           color="danger"
           className="mb-2 w-max hover:bg-danger hover:text-danger-foreground hover:shadow-lg hover:shadow-danger/40"
           startIcon={<ArrowLeftIcon size={18} />}
-          onPress={() => router.replace("/dashboard/users")}
+          onPress={() => router.back()}
         >
           Back
         </Button>
@@ -217,7 +219,6 @@ const UserEdit = (
                                 required: true,
                               })}
                               defaultValue={user.name?.toString()}
-                              
                               label="Name"
                               placeholder="Enter your name"
                               variant="bordered"

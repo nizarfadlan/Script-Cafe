@@ -53,20 +53,22 @@ export async function getAll({
   paginationQuery: PaginationQueryInput,
 }) {
   try {
-    const { limit, cursor, skip, search } = paginationQuery;
+    const { limit, cursor, skip, search, status } = paginationQuery;
     const items = await prisma.user.findMany({
-      take: limit,
+      take: limit + 1,
       skip,
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: {
         id: "asc",
       },
-      where: search ? {
+      where: {
         name: {
           contains: search,
           mode: "insensitive",
         },
-      } : undefined,
+        isActive: status === "all" ? undefined : (status === "active" ? true : (status === "inactive" ? false : undefined)),
+        deletedAt: status === "deleted" ? { not: null } : (status === "active" ? null : (status === "inactive" ? null : undefined)),
+      },
     });
 
     let nextCursor: typeof cursor | undefined = undefined;

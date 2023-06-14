@@ -31,7 +31,7 @@ export function MenuNavbar({
               <>
                 {menu.dropdown && menu.items !== undefined ?
                   <>
-                    <Dropdown showArrow backdropVariant="opaque" closeOnSelect key={menu.href}>
+                    <Dropdown showArrow closeOnSelect key={menu.href}>
                       <NavbarItem>
                         <DropdownTrigger>
                           <Button
@@ -52,7 +52,7 @@ export function MenuNavbar({
                         onAction={(item) => {
                           menu.items?.map(async(itemData) => {
                             if (itemData.key == item) {
-                              await router.push(itemData.href);
+                              await router.replace(itemData.href);
                             }
                           });
                         }}
@@ -81,7 +81,7 @@ export function MenuNavbar({
                     </Dropdown>
                   </>
                 :
-                <NextLink href={menu.href} key={menu.href}>
+                <NextLink href={menu.href} replace={true} key={menu.href}>
                     <NavbarItem className="px-4" as={Link} color={pathname === menu.href ? "secondary" : "foreground"} isActive={pathname == menu.href}>
                       {menu.name}
                     </NavbarItem>
@@ -117,7 +117,7 @@ export function MenuCollapseNavbar({
               <>
                 {menu.href !== "#" ?
                   <NavbarMenuItem>
-                    <NextLink href={menu.href}>
+                    <NextLink replace={true} href={menu.href}>
                       <Link
                         size="lg"
                         color={
@@ -144,7 +144,7 @@ export function MenuCollapseNavbar({
                           ? (
                           <>
                             <NavbarMenuItem>
-                              <NextLink href={item.href}>
+                              <NextLink replace={true} href={item.href}>
                                 <Link
                                   size="lg"
                                   color={

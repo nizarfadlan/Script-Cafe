@@ -41,7 +41,6 @@ const DetailUser = ({
 
   return (
     <>
-
       {status === "loading" ?
         (
           <p>Loading...</p>

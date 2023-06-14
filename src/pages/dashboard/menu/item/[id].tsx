@@ -1,7 +1,7 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { appRouter } from "@/server/api/root";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import superjson from "superjson";
 import { prisma } from "@/server/db";
 import { api } from "@/utils/api";
@@ -12,7 +12,7 @@ import { type UpdateItemInput, updateItemSchema } from "@/server/menu/item/item.
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toastCustom } from "@/components/libs/Toast";
 import { ArrowLeftIcon, FailedIcon, SuccessIcon } from "@/components/libs/Icons";
-import type { MenuItem } from "@prisma/client";
+import { Role, type MenuItem } from "@prisma/client";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -42,6 +42,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     props: {
       trpcState: helpers.dehydrate(),
       id,
+      session,
     },
   };
 }
@@ -51,6 +52,8 @@ const ItemEdit = (
 ) => {
   const router = useRouter();
   const { id } = props;
+  const { data: session } = useSession();
+
   const { data, refetch, isLoading: loadingGetData } = api.item.getOne.useQuery({ id });
   const { mutate } = api.item.updateItem.useMutation({
     onSuccess: async () => {
@@ -100,7 +103,14 @@ const ItemEdit = (
   });
 
   const onSubmit: SubmitHandler<UpdateItemInput> = (dataInput): void => {
-    mutate(dataInput);
+    if (session?.user.role === Role.Manajer || session?.user.role === Role.Owner) {
+      mutate(dataInput);
+    } else {
+      toastCustom({
+        type: "error",
+        description: "You don't have permission to update item"
+      });
+    }
   }
 
   const onStatusItem = (): void => {
@@ -124,7 +134,7 @@ const ItemEdit = (
             color="danger"
             className="mb-2 w-max hover:bg-danger hover:text-danger-foreground hover:shadow-lg hover:shadow-danger/40"
             startIcon={<ArrowLeftIcon size={18} />}
-            onPress={() => router.replace("/dashboard/menu/item")}
+            onPress={() => router.push("/dashboard/menu/item")}
           >
             Back
           </Button>

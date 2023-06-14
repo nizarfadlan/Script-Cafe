@@ -48,11 +48,19 @@ This program is made up of:
 
 ## To-Do
 
-- [ ] Add Booking
-- [ ] Add Payment
-- [ ] Add Order
+### Management Cafe
+- [ ] CRU Booking
+- [X] CRUD Payment
+- [X] CRU Order
+
+### User
+- [ ] Order Page
 - [ ] Home Page Menu
 - [ ] Home Page About
+
+### System
+- [ ] Refactor Code Type
+- [ ] Change Payment Method to Midtrans and Delete Payment Schema
 
 ---
 

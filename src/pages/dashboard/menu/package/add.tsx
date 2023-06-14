@@ -77,11 +77,14 @@ const AddPackageItem: NextPage = () => {
   });
 
   const items: IItemsOnPackage[] = useLiveQuery(
-    () => itemsOnPackageTable.toArray(),
-    []
-  ) as IItemsOnPackage[] ?? [];
+    async() => {
+      const getData: IItemsOnPackage[] = await itemsOnPackageTable.toArray() as IItemsOnPackage[];
 
-  if (items.length > 0) setValue("items", items);
+      setValue("items", getData)
+
+      return getData;
+    }, []
+  ) as IItemsOnPackage[] ?? [];
 
   const onSubmit: SubmitHandler<CreatePackageInput> = (dataInput): void => {
     mutate(dataInput);
@@ -100,7 +103,7 @@ const AddPackageItem: NextPage = () => {
               color="danger"
               className="w-max hover:bg-danger hover:text-danger-foreground hover:shadow-lg hover:shadow-danger/40"
               startIcon={<ArrowLeftIcon size={18} />}
-              onPress={() => router.replace("/dashboard/menu/package")}
+              onPress={() => router.push("/dashboard/menu/package")}
             >
               Back
             </Button>
@@ -111,7 +114,6 @@ const AddPackageItem: NextPage = () => {
                 {...register("name", {
                   required: true,
                 })}
-                
                 label="Name"
                 placeholder="Enter name package item"
                 variant="bordered"

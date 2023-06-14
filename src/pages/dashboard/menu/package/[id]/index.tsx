@@ -12,6 +12,7 @@ import { api } from "@/utils/api";
 import moment from "moment";
 import { CardItem } from "@/components/dashboard/packagesItem/CardPackageItem";
 import type { IItemsOnPackage } from "@/types/packateItem.type";
+import { formatRupiah } from "@/libs/formatRupiah";
 
 export const getServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -54,7 +55,7 @@ const DetailPackageItem = (
   const { data } = api.packageItem.getOne.useQuery({ id });
 
   if (!data) {
-    <LayoutDashboard title="Edit item">
+    <LayoutDashboard title="Detail item">
       <div className="flex justify-center">
         <Spinner color="secondary" />
       </div>
@@ -92,13 +93,13 @@ const DetailPackageItem = (
           color="danger"
           className="w-max hover:bg-danger hover:text-danger-foreground hover:shadow-lg hover:shadow-danger/40"
           startIcon={<ArrowLeftIcon size={18} />}
-          onPress={() => router.replace("/dashboard/menu/package")}
+          onPress={() => router.push("/dashboard/menu/package")}
         >
           Back
         </Button>
         <h1 className="text-2xl font-semibold">Detail package item</h1>
-        <div className="flex flex-col w-full gap-4 md:flex-row">
-          <Card className="w-full lg:max-w-[330px] p-3">
+        <div className="relative flex flex-col w-full gap-4 lg:flex-row">
+          <Card className="w-full lg:max-w-[370px] p-3 h-max relative top-0 lg:sticky lg:top-20">
             <CardHeader>
               Informasi package item
             </CardHeader>
@@ -122,7 +123,7 @@ const DetailPackageItem = (
                         }
                       `}
                       >
-                        Rp.{data?.price}
+                        Rp {formatRupiah(data?.price ?? 0)}
                       </p>
                       {
                         data?.discountPercent &&
@@ -133,7 +134,7 @@ const DetailPackageItem = (
                     </div>
                     {data?.discountPercent ? (
                       <p className="text-danger">
-                        Rp.{calculateDiscount(data.price, data.discountPercent)}
+                        Rp {formatRupiah(calculateDiscount(data.price, data.discountPercent))}
                       </p>
                     ): null}
                   </p>
@@ -177,7 +178,7 @@ const DetailPackageItem = (
               Content inside the package item
             </CardHeader>
             <CardBody>
-              <div className="grid items-center grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid items-center grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {items.map((item, index) => (
                   <CardItem key={item.id} index={index} item={item} type="view" />
                 ))}

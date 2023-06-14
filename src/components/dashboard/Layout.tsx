@@ -68,45 +68,42 @@ const Menu: Menu[] = [
         description: "Manage existing menu packages and can also disable menu packages that appear to customers",
       },
     ],
-  }
+  },
+  {
+    name: "Table",
+    href: "/dashboard/table",
+  },
 ];
 
 export default function LayoutDashboard({
   title,
   children,
 }: LayoutProps) {
-
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const onTitle = `${title} - Dashboard`;
 
-  if (status === "loading") {
+  if (status === "loading" && !session) {
     return (
-      <>
-        <Layout title="loading">
-          <div className="flex justify-center">
-            <Spinner color="secondary" />
-          </div>
-        </Layout>
-      </>
+      <Layout title="loading">
+        <div className="flex justify-center">
+          <Spinner color="secondary" />
+        </div>
+      </Layout>
     )
   }
 
-  if (status === "unauthenticated") {
+  if (status === "unauthenticated" || !session) {
     return (
-      <>
-        <Layout title="unauthorize">
-          <Unauthorize />
-        </Layout>
-      </>
+      <Layout title="unauthorize">
+        <Unauthorize />
+      </Layout>
     );
   }
 
   return (
-    <>
-      <Layout title={onTitle} menu={Menu}>
-        {children}
-      </Layout>
-    </>
+    <Layout title={onTitle} menu={Menu}>
+      {children}
+    </Layout>
   );
 }
 

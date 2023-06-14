@@ -4,10 +4,13 @@ import ModalDetailItem from "@/components/dashboard/items/ModalDetailItem";
 import { ChevronDownIcon, FilterIcon, SearchIcon } from "@/components/libs/Icons";
 import TableDynamic, { type TableData, type TableColumn, type TableActions } from "@/components/libs/Table";
 import { toastCustom, toastCustomLoading } from "@/components/libs/Toast";
+import { formatRupiah } from "@/libs/formatRupiah";
 import type { StatusData } from "@/server/pagination/pagination.schema";
 import { api } from "@/utils/api";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Popover, PopoverContent, PopoverTrigger, Radio, RadioGroup, Spinner, useDisclosure } from "@nextui-org/react";
+import { Role } from "@prisma/client";
 import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -19,10 +22,11 @@ const columns: TableColumn[] = [
 ];
 
 const Item: NextPage = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const { isOpen: openModalDetail, onOpen: onOpenModalDetail, onOpenChange: onOpenChangeModalDetail } = useDisclosure();
 
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [item, setItem] = useState<string>("");
   const [status, setStatus] = useState<string | undefined>("all" as StatusData);
@@ -36,10 +40,14 @@ const Item: NextPage = () => {
     [limit],
   );
 
+  const handleChangeViewNumber = useCallback((limit: string | Set<React.Key>) => {
+    setLimit(limit);
+    setPage(0);
+  }, []);
+
   const { data, fetchNextPage, isLoading, isError, refetch } = api.item.getAll.useInfiniteQuery(
     {
       limit: parseInt(limitValue),
-      skip: (page - 1) * parseInt(limitValue),
       search,
       status: status as StatusData,
     },
@@ -47,6 +55,11 @@ const Item: NextPage = () => {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     },
   );
+
+  const handleChangeStatusView = useCallback((status: string) => {
+    setStatus(status);
+    setPage(0);
+  }, []);
 
   const { mutate, status: statusDelete } = api.item.deleteItem.useMutation({
     onSuccess: async() => {
@@ -83,11 +96,18 @@ const Item: NextPage = () => {
   };
 
   const handleDelete = (id: string): void => {
-    mutate({ id });
+    if (session?.user.role === Role.Manajer || session?.user.role === Role.Owner) {
+      mutate({ id });
 
-    if (statusDelete === "loading") {
-      toastCustomLoading({
-        description: "Deleting item...",
+      if (statusDelete === "loading") {
+        toastCustomLoading({
+          description: "Deleting item...",
+        });
+      }
+    } else {
+      toastCustom({
+        type: "error",
+        description: "You don't have permission to delete item",
       });
     }
   };
@@ -97,28 +117,32 @@ const Item: NextPage = () => {
   }
 
   const { pages: pageData = [] } = data || {};
-
-  const items: TableData[] = pageData[page-1]?.items.map((item) => {
-    let diskon = 0;
-    if (item.discountPercent && item.discountPercent > 0) {
-      diskon = calculateDiscount(item.price, item.discountPercent);
-    }
-    return {
-      id: item.id,
-      title: item.name || undefined,
-      category: (diskon > 0 ?
-          <div className="flex gap-x-2">
-            <span className="line-through">Rp.{item.price.toString()}</span>
-            <span className="text-danger">Rp.{diskon}</span>
-          </div>
-        :
-          "Rp." + item.price.toString()
-      ),
-      descriptionCategory: (item.discountPercent?.toString() || "0") + " %",
-      status: item.deletedAt ? "delete" : (item.available ? "available" : "unavailable"),
-    }
-  }) || [];
-  const cursor = pageData[page-1]?.nextCursor;
+  const items: TableData[] = [];
+  pageData.map((page) => {
+    items.push(
+      ...page.items.map((item) => {
+        let diskon = 0;
+        if (item.discountPercent && item.discountPercent > 0) {
+          diskon = calculateDiscount(item.price, item.discountPercent);
+        }
+        return {
+          id: item.id,
+          title: item.name || undefined,
+          category: (diskon > 0 ?
+              <div className="flex gap-x-2">
+                <span className="line-through">Rp {formatRupiah(item.price)}</span>
+                <span className="text-danger">Rp {formatRupiah(diskon)}</span>
+              </div>
+            :
+              <span>Rp {formatRupiah(item.price)}</span>
+          ),
+          descriptionCategory: (item.discountPercent?.toString() || "0") + " %",
+          status: item.deletedAt ? "delete" : (item.available ? "available" : "unavailable"),
+        }
+      }
+    ));
+  });
+  const cursor = pageData[page]?.nextCursor;
 
   const actions: TableActions = {
     detail: handleDetail,
@@ -146,7 +170,6 @@ const Item: NextPage = () => {
             showArrow
             offset={10}
             placement="bottom-end"
-            variant="shadow"
             className="w-[280px] bg-white dark:bg-content1 py-2"
           >
             <PopoverTrigger>
@@ -154,7 +177,7 @@ const Item: NextPage = () => {
                 variant="bordered"
                 color="secondary"
                 startIcon={<FilterIcon size={18} />}
-                className="min-w-max sm:w-[120px] hover:bg-secondary hover:text-secondary-foreground hove:shadow-lg hover:shadow-secondary/40"
+                className="min-w-max sm:w-[120px] hover:bg-secondary hover:text-secondary-foreground hover:shadow-lg hover:shadow-secondary/40"
               >
                 <p className="sr-only sm:not-sr-only">Filter</p>
               </Button>
@@ -177,13 +200,14 @@ const Item: NextPage = () => {
                         onValueChange={setSearch}
                         startContent={<SearchIcon size={18} />}
                         isClearable
+                        onClear={() => setSearch("")}
                       />
                     </div>
                     <div>
                       <p className="mb-2 text-sm text-foreground">Status</p>
                       <RadioGroup
                         value={status}
-                        onValueChange={setStatus}
+                        onValueChange={handleChangeStatusView}
                         color="secondary"
                       >
                         <Radio value="all">All</Radio>
@@ -209,7 +233,7 @@ const Item: NextPage = () => {
                           color="secondary"
                           selectedKeys={limit}
                           selectionMode="single"
-                          onSelectionChange={setLimit}
+                          onSelectionChange={handleChangeViewNumber}
                         >
                           <DropdownItem key="10">10</DropdownItem>
                           <DropdownItem key="25">25</DropdownItem>

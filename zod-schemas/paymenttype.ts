@@ -4,6 +4,8 @@ import { CompleteTransaction, relatedTransactionModel } from "./index"
 export const paymentTypeModel = z.object({
   id: z.string(),
   name: z.string(),
+  accountNumber: z.bigint(),
+  active: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
