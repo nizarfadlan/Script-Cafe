@@ -1,9 +1,9 @@
 import LayoutDashboard from "@/components/dashboard/Layout";
 import { ChevronDownIcon, FilterIcon, PlusIcon, SearchIcon } from "@/components/libs/Icons";
-import TableDynamic, { TableActions, TableColumn, TableData } from "@/components/libs/Table";
+import TableDynamic, { type TableActions, type TableColumn, type TableData } from "@/components/libs/Table";
 import { toastCustom, toastCustomLoading } from "@/components/libs/Toast";
 import { formatRupiah } from "@/libs/formatRupiah";
-import { StatusData } from "@/server/pagination/pagination.schema";
+import type { StatusData } from "@/server/pagination/pagination.schema";
 import { api } from "@/utils/api";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Popover, PopoverContent, PopoverTrigger, Radio, RadioGroup, Spinner } from "@nextui-org/react";
 import { type NextPage } from "next";

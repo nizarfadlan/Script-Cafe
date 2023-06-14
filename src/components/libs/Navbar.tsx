@@ -58,7 +58,6 @@ export default function NavbarComponent({
           {status === "authenticated" && session ? (
             <Dropdown
               placement="bottom-end"
-              backdropVariant="blur"
               triggerScaleOnOpen
             >
               <NavbarItem aria-label="avatarButton">
