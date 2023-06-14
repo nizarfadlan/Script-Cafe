@@ -53,7 +53,7 @@ export async function createTransaction<T extends keyof TransactionRequestType>(
   return transaction;
 }
 
-export const checkTransaction = async (orderId: string): Promise<Record<string, any>> => {
+export const checkTransaction = async(orderId: string): Promise<Record<string, unknown>> => {
   const snap = Snap();
 
   const transaction = await snap.transaction.status(orderId);

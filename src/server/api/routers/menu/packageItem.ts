@@ -4,7 +4,7 @@ import { createPackageController, deletePackageController, getAll, getOne, resto
 import { paginationQuery } from "@/server/pagination/pagination.schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { Package } from "@prisma/client";
+import type { Package } from "@prisma/client";
 
 export const packageRouter = createTRPCRouter({
   createPackage: protectedProcedure

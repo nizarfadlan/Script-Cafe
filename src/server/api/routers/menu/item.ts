@@ -4,7 +4,7 @@ import { createItemController, deleteItemController, getAll, getAllIdName, getOn
 import { paginationQuery } from "@/server/pagination/pagination.schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { MenuItem } from "@prisma/client";
+import type { MenuItem } from "@prisma/client";
 
 export const itemRouter = createTRPCRouter({
   createItem: protectedProcedure

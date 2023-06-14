@@ -14,3 +14,5 @@ const createBooking = z.object({
     required_error: "Table is required",
   }),
 })
+
+export const createBookingSchema = createBooking;

@@ -7,7 +7,6 @@ import type { StatusData } from "@/server/pagination/pagination.schema";
 import { api } from "@/utils/api";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Popover, PopoverContent, PopoverTrigger, Radio, RadioGroup, Spinner } from "@nextui-org/react";
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -20,7 +19,6 @@ const columns: TableColumn[] = [
 ];
 
 const Order: NextPage = () => {
-  const { data: session } = useSession();
   const router = useRouter();
   const { query } = router;
 
