@@ -46,6 +46,10 @@ This program is made up of:
 
 ---
 
+## Example Account Owner
+Email: owner@nizarfadlan.dev
+Password: nizar123
+
 ## To-Do
 
 ### Management Cafe
