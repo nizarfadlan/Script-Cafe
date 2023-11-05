@@ -47,9 +47,9 @@ This program is made up of:
 ---
 
 ## Example Account Owner
-Email: owner@nizarfadlan.dev
+Email: owner@example.com
 
-Password: nizar123
+Password: example123
 
 ## To-Do
 
